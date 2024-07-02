@@ -10,14 +10,18 @@ import SnapKit
 
 class HomeCollectionViewCell: BaseTableViewCell {
     
+    var data: TodoModel? {
+        didSet {
+            setData()
+        }
+    }
+    
     let doneCircle = UIImageView()
     let titleLabel = UILabel()
     let memoLabel = UILabel()
     let dueDateLabel = UILabel()
     
-    
-    
-    override func setHierarchy() { 
+    override func setHierarchy() {
         contentView.addSubview(doneCircle)
         contentView.addSubview(titleLabel)
         contentView.addSubview(memoLabel)
@@ -63,6 +67,22 @@ class HomeCollectionViewCell: BaseTableViewCell {
         dueDateLabel.font = .systemFont(ofSize: 13)
         dueDateLabel.textColor = .gray
         
+    }
+    
+    private func setData() {
+        guard let data else { return }
+        
+        let exclamationMarks = String(repeating: "!", count: data.priority ?? 0)
+        let fullText = "\(exclamationMarks) \(data.title)"
+        
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        let exclamationRange = (fullText as NSString).range(of: exclamationMarks)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.systemBlue, range: exclamationRange)
+        
+        self.titleLabel.attributedText = attributedString
+        self.memoLabel.text = data.memo
+        self.dueDateLabel.text = data.dueDate?.formatted()
     }
     
 }

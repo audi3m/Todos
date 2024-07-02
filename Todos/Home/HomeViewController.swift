@@ -101,9 +101,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: HomeCollectionViewCell.id, for: indexPath) as! HomeCollectionViewCell
         let data = list[indexPath.row]
-        cell.titleLabel.text = data.title
-        cell.memoLabel.text = data.memo
-        cell.dueDateLabel.text = data.dueDate?.formatted()
+        cell.data = data
         return cell
     }
     
