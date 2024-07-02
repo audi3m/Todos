@@ -7,13 +7,19 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 final class HomeViewController: BaseViewController {
     
-     let tableView = UITableView()
+    let tableView = UITableView()
+    
+    var list: Results<TodoModel>!
+    let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        list = realm.objects(TodoModel.self)
         
         setNavBar()
         
@@ -26,18 +32,44 @@ final class HomeViewController: BaseViewController {
     private func setNavBar() {
         navigationItem.title = "목록"
         let add = UIBarButtonItem(image: .plus, style: .plain, target: self, action: #selector(addButtonClicked))
-        let menu = UIBarButtonItem(image: .menu, style: .plain, target: self, action: #selector(menuButtonClicked))
+        let addMenu = UIMenu(title: "", options: .displayInline, children: [
+            UIAction(title: "마감날짜순", image: UIImage(systemName: "calendar"), handler: { _ in
+                self.sortByDueDate()
+            }),
+            UIAction(title: "제목순", image: UIImage(systemName: "quote.bubble"), handler: { _ in
+                self.sortByTitle()
+            }),
+            UIAction(title: "우선순위", image: UIImage(systemName: "123.rectangle"), handler: { _ in
+                self.sortByPriority()
+            })
+        ])
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: nil, image: .menu, primaryAction: nil, menu: addMenu)
         navigationItem.leftBarButtonItem = add
-        navigationItem.rightBarButtonItem = menu
-         
+        
     }
     
     @objc private func menuButtonClicked() {
         
     }
     
-    @objc private func addButtonClicked() {
+    private func sortByDueDate() {
+        list = realm.objects(TodoModel.self)
+            .sorted(byKeyPath: "dueDate", ascending: true)
+    }
+    
+    private func sortByTitle() {
+        list = realm.objects(TodoModel.self)
+            .sorted(byKeyPath: "title", ascending: true)
+    }
+    
+    private func sortByPriority() {
         
+    }
+    
+    @objc private func addButtonClicked() {
+        let vc = AddNewViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        present(nav, animated: true)
     }
     
     override func setHierarchy() {
@@ -50,25 +82,19 @@ final class HomeViewController: BaseViewController {
         }
     }
     
-    override func setUI() {
-        
-    }
-    
-    
-    
-    
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: HomeCollectionViewCell.id, for: indexPath) as! HomeCollectionViewCell
-        cell.titleLabel.text = "제목 자리입니다."
-        cell.memoLabel.text = "Memo 자리입니다."
-        cell.dueDateLabel.text = "Date 자리입니다."
+        let data = list[indexPath.row]
+        cell.titleLabel.text = data.title
+        cell.memoLabel.text = data.memo
+        cell.dueDateLabel.text = data.dueDate?.formatted()
         return cell
     }
     
@@ -79,5 +105,22 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { action, view, completionHandler in
+//            let data = self.realm.object(ofType: TodoModel.self, forPrimaryKey: self.list[indexPath.row].id)!
+            try! self.realm.write {
+                self.realm.delete(self.list[indexPath.row])
+            }
+            tableView.reloadData()
+            
+        }
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
+    }
+    
+    
     
 }

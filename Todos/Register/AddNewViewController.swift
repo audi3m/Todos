@@ -59,16 +59,21 @@ final class AddNewViewController: BaseViewController {
     @objc func addButtonClicked() {
         let titleCell = tableView.visibleCells.first as! TitleMemoTableViewCell
         let text = titleCell.titleTextField.text!
+        
+        if text.isEmpty {
+            showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") {
+                
+            }
+        } else {
+            let realm = try! Realm()
+            let data = TodoModel(title: text, memo: "메모", dueDate: .now)
+            try! realm.write {
+                realm.add(data)
+                print("Realm Save Success")
+            }
             
-        let realm = try! Realm()
-        let data = TodoModel(title: text, memo: "메모", dueDate: .now)
-        try! realm.write {
-            realm.add(data)
-            print("Realm Save Success")
+            dismiss(animated: true)
         }
-        
-        dismiss(animated: true)
-        
     }
      
 }

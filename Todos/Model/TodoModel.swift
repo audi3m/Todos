@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class MoneyTable: Object {
+class TodoModel: Object {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted(indexed: true) var title: String
     @Persisted var memo: String?
