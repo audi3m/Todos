@@ -9,6 +9,7 @@ import UIKit
 
 extension UIImage {
     static let menu = UIImage(systemName: "ellipsis.circle")
+    static let plus = UIImage(systemName: "plus")
     
     
     
