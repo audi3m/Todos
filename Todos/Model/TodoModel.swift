@@ -13,12 +13,14 @@ class TodoModel: Object {
     @Persisted(indexed: true) var title: String
     @Persisted var memo: String?
     @Persisted var dueDate: Date?
+    @Persisted var priority: Int?
     
-    convenience init(title: String, memo: String?, dueDate: Date?) {
+    convenience init(title: String, memo: String?, dueDate: Date?, priority: Int?) {
         self.init()
         self.title = title
         self.memo = memo
         self.dueDate = dueDate
+        self.priority = priority
     }
     
 } 

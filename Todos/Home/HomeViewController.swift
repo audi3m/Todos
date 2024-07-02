@@ -13,8 +13,8 @@ final class HomeViewController: BaseViewController {
     
     let tableView = UITableView()
     
-    var list: Results<TodoModel>!
     let realm = try! Realm()
+    var list: Results<TodoModel>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,7 @@ final class HomeViewController: BaseViewController {
                 self.sortByTitle()
             }),
             UIAction(title: "우선순위", image: UIImage(systemName: "123.rectangle"), handler: { _ in
-                self.sortByPriority()
+                self.filterLowPriority()
             })
         ])
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: nil, image: .menu, primaryAction: nil, menu: addMenu)
@@ -48,26 +48,27 @@ final class HomeViewController: BaseViewController {
         
     }
     
-    @objc private func menuButtonClicked() {
-        
-    }
-    
     private func sortByDueDate() {
         list = realm.objects(TodoModel.self)
             .sorted(byKeyPath: "dueDate", ascending: true)
+        tableView.reloadData()
     }
     
     private func sortByTitle() {
         list = realm.objects(TodoModel.self)
             .sorted(byKeyPath: "title", ascending: true)
+        tableView.reloadData()
     }
     
-    private func sortByPriority() {
-        
+    private func filterLowPriority() {
+        list = realm.objects(TodoModel.self)
+            .where { $0.priority == 1 }
+        tableView.reloadData()
     }
     
     @objc private func addButtonClicked() {
         let vc = AddNewViewController()
+        vc.delegate = self
         let nav = UINavigationController(rootViewController: vc)
         present(nav, animated: true)
     }
@@ -82,6 +83,14 @@ final class HomeViewController: BaseViewController {
         }
     }
     
+}
+
+extension HomeViewController: AddItemViewControllerDelegate {
+    func didAddNewItem(_ added: Bool) {
+        if added {
+            tableView.reloadData()
+        }
+    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {

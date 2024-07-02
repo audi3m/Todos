@@ -10,6 +10,7 @@ import SnapKit
 import RealmSwift
 
 final class AddNewViewController: BaseViewController {
+    weak var delegate: AddItemViewControllerDelegate?
     
     let tableView = UITableView()
     
@@ -66,12 +67,12 @@ final class AddNewViewController: BaseViewController {
             }
         } else {
             let realm = try! Realm()
-            let data = TodoModel(title: text, memo: "메모", dueDate: .now)
+            let data = TodoModel(title: text, memo: "메모", dueDate: .now, priority: Int.random(in: 1...3))
             try! realm.write {
                 realm.add(data)
                 print("Realm Save Success")
             }
-            
+            delegate?.didAddNewItem(true)
             dismiss(animated: true)
         }
     }
@@ -107,4 +108,8 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         case addImage = "이미지 추가"
     }
     
+}
+
+protocol AddItemViewControllerDelegate: AnyObject {
+    func didAddNewItem(_ added: Bool)
 }

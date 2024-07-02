@@ -60,13 +60,8 @@ class HomeCollectionViewCell: BaseTableViewCell {
         memoLabel.font = .systemFont(ofSize: 13)
         memoLabel.textColor = .gray
         
-        
         dueDateLabel.font = .systemFont(ofSize: 13)
         dueDateLabel.textColor = .gray
-        
-        
-        
-        
         
     }
     
