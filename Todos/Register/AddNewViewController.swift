@@ -97,6 +97,11 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let attribute = Attributes.allCases[indexPath.row]
+        if let vc = attribute.viewController {
+            navigationController?.pushViewController(vc, animated: true)
+            
+        }
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
      
@@ -106,6 +111,19 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         case tag = "태그"
         case priority = "우선 순위"
         case addImage = "이미지 추가"
+        
+        var viewController: UIViewController? {
+            switch self {
+            case .titleAndMemo, .addImage:
+                return nil
+            case .dueDate:
+                return DueDateViewController()
+            case .tag:
+                return TagViewController()
+            case .priority:
+                return PriorityViewController()
+            }
+        }
     }
     
 }

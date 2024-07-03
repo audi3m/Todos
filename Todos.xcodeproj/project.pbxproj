@@ -26,6 +26,10 @@
 		D41AC4A02C341B66002A0D34 /* TitleMemoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC49F2C341B66002A0D34 /* TitleMemoTableViewCell.swift */; };
 		D41AC4A32C341F81002A0D34 /* UIImage+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4A22C341F81002A0D34 /* UIImage+Ex.swift */; };
 		D41AC4A52C341FB1002A0D34 /* id.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4A42C341FB1002A0D34 /* id.swift */; };
+		D41AC4AD2C3580AC002A0D34 /* DueDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4AC2C3580AC002A0D34 /* DueDateViewController.swift */; };
+		D41AC4AF2C3580F2002A0D34 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4AE2C3580F2002A0D34 /* TagViewController.swift */; };
+		D41AC4B12C358102002A0D34 /* PriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4B02C358102002A0D34 /* PriorityViewController.swift */; };
+		D41AC4B32C35849F002A0D34 /* ImageSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4B22C35849F002A0D34 /* ImageSelectViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +52,10 @@
 		D41AC49F2C341B66002A0D34 /* TitleMemoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleMemoTableViewCell.swift; sourceTree = "<group>"; };
 		D41AC4A22C341F81002A0D34 /* UIImage+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ex.swift"; sourceTree = "<group>"; };
 		D41AC4A42C341FB1002A0D34 /* id.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = id.swift; sourceTree = "<group>"; };
+		D41AC4AC2C3580AC002A0D34 /* DueDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DueDateViewController.swift; sourceTree = "<group>"; };
+		D41AC4AE2C3580F2002A0D34 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
+		D41AC4B02C358102002A0D34 /* PriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewController.swift; sourceTree = "<group>"; };
+		D41AC4B22C35849F002A0D34 /* ImageSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelectViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +95,7 @@
 				D41AC48D2C33DE3F002A0D34 /* Model */,
 				D41AC4962C34183B002A0D34 /* Home */,
 				D41AC4952C34183A002A0D34 /* Register */,
+				D41AC4AB2C358096002A0D34 /* Attributes */,
 				D41AC4942C341838002A0D34 /* List */,
 				D41AC4882C33DD99002A0D34 /* Base */,
 				D41AC4A12C341F74002A0D34 /* Extensions */,
@@ -150,6 +159,17 @@
 				D41AC4A42C341FB1002A0D34 /* id.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D41AC4AB2C358096002A0D34 /* Attributes */ = {
+			isa = PBXGroup;
+			children = (
+				D41AC4AC2C3580AC002A0D34 /* DueDateViewController.swift */,
+				D41AC4AE2C3580F2002A0D34 /* TagViewController.swift */,
+				D41AC4B02C358102002A0D34 /* PriorityViewController.swift */,
+				D41AC4B22C35849F002A0D34 /* ImageSelectViewController.swift */,
+			);
+			path = Attributes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,7 +251,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D41AC4A32C341F81002A0D34 /* UIImage+Ex.swift in Sources */,
+				D41AC4AD2C3580AC002A0D34 /* DueDateViewController.swift in Sources */,
 				D41AC4732C33DCFE002A0D34 /* HomeViewController.swift in Sources */,
+				D41AC4AF2C3580F2002A0D34 /* TagViewController.swift in Sources */,
 				D41AC4912C3417B1002A0D34 /* ReminderListViewController.swift in Sources */,
 				D41AC48A2C33DDA4002A0D34 /* BaseViewController.swift in Sources */,
 				D41AC46F2C33DCFE002A0D34 /* AppDelegate.swift in Sources */,
@@ -239,9 +261,11 @@
 				D41AC49E2C341AFA002A0D34 /* BaseCollectionViewCell.swift in Sources */,
 				D41AC4A52C341FB1002A0D34 /* id.swift in Sources */,
 				D41AC4A02C341B66002A0D34 /* TitleMemoTableViewCell.swift in Sources */,
+				D41AC4B32C35849F002A0D34 /* ImageSelectViewController.swift in Sources */,
 				D41AC49A2C3418A7002A0D34 /* HomeCollectionViewCell.swift in Sources */,
 				D41AC48F2C33DE48002A0D34 /* TodoModel.swift in Sources */,
 				D41AC49C2C341AD5002A0D34 /* AddNewTableViewCell.swift in Sources */,
+				D41AC4B12C358102002A0D34 /* PriorityViewController.swift in Sources */,
 				D41AC48C2C33DDC0002A0D34 /* BaseTableViewCell.swift in Sources */,
 				D41AC4712C33DCFE002A0D34 /* SceneDelegate.swift in Sources */,
 				D41AC4932C3417E3002A0D34 /* AddNewViewController.swift in Sources */,

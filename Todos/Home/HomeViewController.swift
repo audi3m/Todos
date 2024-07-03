@@ -16,6 +16,8 @@ final class HomeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavBar()
+        
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -33,7 +35,14 @@ final class HomeViewController: BaseViewController {
         }
     }
     
-    override func setUI() {
+    private func setNavBar() {
+        navigationItem.title = "전체"
+        navigationItem.largeTitleDisplayMode = .always
+        let menu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(menuButtonClicked))
+        navigationItem.rightBarButtonItem = menu
+    }
+    
+    @objc func menuButtonClicked() {
         
     }
     
@@ -41,12 +50,13 @@ final class HomeViewController: BaseViewController {
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        SortType.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as! HomeCollectionViewCell
-        
+        let type = SortType.allCases[indexPath.item]
+        cell.setData(type: type)
         return cell
     }
     
@@ -68,4 +78,43 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     
+    
+}
+
+enum SortType: String, CaseIterable {
+    case today = "오늘"
+    case scheduled = "예정"
+    case all = "전체"
+    case flagged = "깃발 표시"
+    case completed = "완료됨"
+    
+    var circleColor: UIColor {
+        switch self {
+        case .today:
+            return .systemBlue
+        case .scheduled:
+            return .systemRed
+        case .all:
+            return .systemGray
+        case .flagged:
+            return .systemOrange
+        case .completed:
+            return .lightGray
+        }
+    }
+    
+    var icon: String {
+        switch self {
+        case .today:
+            "clock.circle.fill"
+        case .scheduled:
+            "calendar.circle.fill"
+        case .all:
+            "tray.circle.fill"
+        case .flagged:
+            "flag.circle.fill"
+        case .completed:
+            "checkmark.circle.fill"
+        }
+    }
 }

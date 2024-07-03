@@ -15,11 +15,6 @@ class HomeCollectionViewCell: BaseCollectionViewCell {
     let titleLabel = UILabel()
     let countLabel = UILabel()
     
-    
-    
-    
-    
-    
     override func setHierarchy() {
         contentView.addSubview(cellBackground)
         contentView.addSubview(iconImageView)
@@ -35,12 +30,12 @@ class HomeCollectionViewCell: BaseCollectionViewCell {
         
         iconImageView.snp.makeConstraints { make in
             make.top.leading.equalTo(contentView).inset(10)
-            make.size.equalTo(40)
+            make.size.equalTo(37)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(iconImageView.snp.centerX)
             make.top.equalTo(iconImageView.snp.bottom).offset(10)
+            make.leading.equalTo(iconImageView.snp.leading)
         }
         
         countLabel.snp.makeConstraints { make in
@@ -54,20 +49,21 @@ class HomeCollectionViewCell: BaseCollectionViewCell {
         cellBackground.layer.cornerRadius = 10
         cellBackground.backgroundColor = .systemGray4
         
-        iconImageView.image = UIImage(systemName: "calendar.circle.fill")
-        
-        
         titleLabel.text = "오늘"
-        titleLabel.font = .boldSystemFont(ofSize: 17)
+        titleLabel.font = .boldSystemFont(ofSize: 16)
         titleLabel.textColor = .lightGray
         
         countLabel.text = "0"
-        countLabel.font = .systemFont(ofSize: 30, weight: .bold)
+        countLabel.font = .boldSystemFont(ofSize: 30)
         
     }
     
-    
-    
+    func setData(type: SortType) {
+        titleLabel.text = type.rawValue
+        let config = UIImage.SymbolConfiguration(paletteColors: [.white, type.circleColor])
+        iconImageView.image = UIImage(systemName: type.icon)
+        iconImageView.preferredSymbolConfiguration = config
+    }
     
 }
 
