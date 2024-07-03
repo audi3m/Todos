@@ -98,10 +98,39 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let attribute = Attributes.allCases[indexPath.row]
-        if let vc = attribute.viewController {
+        switch attribute {
+        case .dueDate:
+            let vc = DueDateViewController()
+            vc.date = { date in
+                print(date.customFormat())
+            }
             navigationController?.pushViewController(vc, animated: true)
+        case .tag:
+            let vc = TagViewController()
+            vc.tag = { tag in
+                print(tag)
+            }
+            navigationController?.pushViewController(vc, animated: true)
+        case .priority:
+            let vc = PriorityViewController()
+            vc.priority = { priority in
+                print(priority)
+            }
+            navigationController?.pushViewController(vc, animated: true)
+        case .addImage:
+            let vc = ImageSelectViewController()
             
+            navigationController?.pushViewController(vc, animated: true)
+        default: break
         }
+        
+        
+//        if let vc = attribute.viewController {
+//            vc.data = { value in
+//                self.moneyButton.setTitle(value, for: .normal)
+//            }
+//            navigationController?.pushViewController(vc, animated: true)
+//        }
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
      
@@ -110,18 +139,20 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         case dueDate = "마감일"
         case tag = "태그"
         case priority = "우선 순위"
-        case addImage = "이미지 추가"
+        case addImage = "이미지 선택"
         
         var viewController: UIViewController? {
             switch self {
-            case .titleAndMemo, .addImage:
-                return nil
             case .dueDate:
                 return DueDateViewController()
             case .tag:
                 return TagViewController()
             case .priority:
                 return PriorityViewController()
+            case .addImage:
+                return ImageSelectViewController()
+            default:
+                return nil
             }
         }
     }

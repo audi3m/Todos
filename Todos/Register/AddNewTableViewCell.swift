@@ -12,10 +12,12 @@ class AddNewTableViewCell: BaseTableViewCell {
     
     let rectangleView = UIView()
     let attributeLabel = UILabel()
+    let attributeValueLabel = UILabel()
     let arrowImageView = UIImageView()
     
     override func setHierarchy() {
         contentView.addSubview(rectangleView)
+        rectangleView.addSubview(attributeValueLabel)
         rectangleView.addSubview(attributeLabel)
         rectangleView.addSubview(arrowImageView)
     }
@@ -32,6 +34,11 @@ class AddNewTableViewCell: BaseTableViewCell {
             make.leading.equalTo(rectangleView.snp.leading).offset(15)
         }
         
+        attributeValueLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(arrowImageView.snp.leading).offset(-20)
+        }
+        
         arrowImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalTo(rectangleView.snp.trailing).offset(-15)
@@ -46,6 +53,9 @@ class AddNewTableViewCell: BaseTableViewCell {
         rectangleView.backgroundColor = .systemGray4
         
         attributeLabel.font = .systemFont(ofSize: 15)
+        
+        attributeValueLabel.text = "여기는 값 자리"
+        attributeValueLabel.font = .systemFont(ofSize: 15)
         
         arrowImageView.image = UIImage(systemName: "chevron.right")
         arrowImageView.tintColor = .white

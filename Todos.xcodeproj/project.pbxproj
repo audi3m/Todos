@@ -30,6 +30,7 @@
 		D41AC4AF2C3580F2002A0D34 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4AE2C3580F2002A0D34 /* TagViewController.swift */; };
 		D41AC4B12C358102002A0D34 /* PriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4B02C358102002A0D34 /* PriorityViewController.swift */; };
 		D41AC4B32C35849F002A0D34 /* ImageSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4B22C35849F002A0D34 /* ImageSelectViewController.swift */; };
+		D41AC4B52C35A435002A0D34 /* Date+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4B42C35A435002A0D34 /* Date+Ex.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		D41AC4AE2C3580F2002A0D34 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		D41AC4B02C358102002A0D34 /* PriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewController.swift; sourceTree = "<group>"; };
 		D41AC4B22C35849F002A0D34 /* ImageSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelectViewController.swift; sourceTree = "<group>"; };
+		D41AC4B42C35A435002A0D34 /* Date+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ex.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				D41AC4A22C341F81002A0D34 /* UIImage+Ex.swift */,
+				D41AC4B42C35A435002A0D34 /* Date+Ex.swift */,
 				D41AC4A42C341FB1002A0D34 /* id.swift */,
 			);
 			path = Extensions;
@@ -264,6 +267,7 @@
 				D41AC4B32C35849F002A0D34 /* ImageSelectViewController.swift in Sources */,
 				D41AC49A2C3418A7002A0D34 /* HomeCollectionViewCell.swift in Sources */,
 				D41AC48F2C33DE48002A0D34 /* TodoModel.swift in Sources */,
+				D41AC4B52C35A435002A0D34 /* Date+Ex.swift in Sources */,
 				D41AC49C2C341AD5002A0D34 /* AddNewTableViewCell.swift in Sources */,
 				D41AC4B12C358102002A0D34 /* PriorityViewController.swift in Sources */,
 				D41AC48C2C33DDC0002A0D34 /* BaseTableViewCell.swift in Sources */,

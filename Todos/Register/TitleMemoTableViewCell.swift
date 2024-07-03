@@ -15,7 +15,6 @@ class TitleMemoTableViewCell: BaseTableViewCell {
     let divider = UIView()
     let memoTextField = UITextField()
     
-    
     override func setHierarchy() {
         contentView.addSubview(rectangleView)
         rectangleView.addSubview(titleTextField)

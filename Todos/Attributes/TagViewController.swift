@@ -6,33 +6,42 @@
 //
 
 import UIKit
+import SnapKit
 
 class TagViewController: BaseViewController {
     
+    let tagTextField = UITextField()
     
-    
-    
+    var tag: ((String) -> Void)?
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "태그"
+        navigationItem.title = "테그"
         
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tag?(tagTextField.text ?? "")
+    }
     
     override func setHierarchy() {
-        
+        view.addSubview(tagTextField)
     }
     
     override func setLayout() {
-        
+        tagTextField.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.height.equalTo(50)
+        }
     }
     
     override func setUI() {
-        
+        tagTextField.placeholder = "테그"
+        tagTextField.backgroundColor = .systemGray6
     }
     
     
