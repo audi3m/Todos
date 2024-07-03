@@ -17,8 +17,7 @@ final class HomeViewController: BaseViewController {
         super.viewDidLoad()
         
         setNavBar()
-        
-        
+         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.id)
@@ -37,9 +36,17 @@ final class HomeViewController: BaseViewController {
     
     private func setNavBar() {
         navigationItem.title = "전체"
-        navigationItem.largeTitleDisplayMode = .always
+        let addNew = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addNewButtonClicked))
         let menu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(menuButtonClicked))
+        navigationItem.leftBarButtonItem = addNew
         navigationItem.rightBarButtonItem = menu
+    }
+    
+    @objc func addNewButtonClicked() {
+        let vc = AddNewViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true)
     }
     
     @objc func menuButtonClicked() {
@@ -61,7 +68,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let vc = ReminderListViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     static private func collectionViewLayout() -> UICollectionViewLayout {
@@ -76,8 +84,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         layout.sectionInset = UIEdgeInsets(top: sectionSpacing, left: sectionSpacing, bottom: sectionSpacing, right: sectionSpacing)
         return layout
     }
-    
-    
     
 }
 

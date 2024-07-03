@@ -25,13 +25,13 @@ final class ReminderListViewController: BaseViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(HomeCollectionViewCell.self, forCellReuseIdentifier: HomeCollectionViewCell.id)
+        tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.id)
         
     }
     
     private func setNavBar() {
         navigationItem.title = "목록"
-        let add = UIBarButtonItem(image: .plus, style: .plain, target: self, action: #selector(addButtonClicked))
+//        let add = UIBarButtonItem(image: .plus, style: .plain, target: self, action: #selector(addButtonClicked))
         let addMenu = UIMenu(title: "", options: .displayInline, children: [
             UIAction(title: "마감날짜순", image: UIImage(systemName: "calendar"), handler: { _ in
                 self.sortByDueDate()
@@ -43,8 +43,9 @@ final class ReminderListViewController: BaseViewController {
                 self.filterLowPriority()
             })
         ])
+        
+//        navigationItem.leftBarButtonItem = add
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: nil, image: .menu, primaryAction: nil, menu: addMenu)
-        navigationItem.leftBarButtonItem = add
         
     }
     

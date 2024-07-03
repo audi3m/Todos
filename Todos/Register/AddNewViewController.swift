@@ -13,6 +13,7 @@ final class AddNewViewController: BaseViewController {
     weak var delegate: AddItemViewControllerDelegate?
     
     let tableView = UITableView()
+    var newTodo = TodoModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,10 +48,8 @@ final class AddNewViewController: BaseViewController {
     
     override func setUI() {
         view.backgroundColor = .systemBackground
-        
         tableView.separatorStyle = .none
         tableView.backgroundColor = .systemBackground
-         
     }
     
     @objc func cancelButtonClicked() {
@@ -60,14 +59,17 @@ final class AddNewViewController: BaseViewController {
     @objc func addButtonClicked() {
         let titleCell = tableView.visibleCells.first as! TitleMemoTableViewCell
         let text = titleCell.titleTextField.text!
+        newTodo.title = text
+        if let memo = titleCell.memoTextField.text {
+            newTodo.memo = memo
+        }
         
         if text.isEmpty {
             showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
             let realm = try! Realm()
-            let data = TodoModel(title: text, memo: "메모", dueDate: .now, priority: Int.random(in: 1...3))
             try! realm.write {
-                realm.add(data)
+                realm.add(newTodo)
                 print("Realm Save Success")
             }
             delegate?.didAddNewItem(true)
@@ -100,19 +102,22 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         case .dueDate:
             let vc = DueDateViewController()
             vc.date = { date in
+                self.newTodo.dueDate = date
                 self.updateLabel(for: indexPath, with: date.customFormat())
             }
             navigationController?.pushViewController(vc, animated: true)
         case .tag:
             let vc = TagViewController()
             vc.tag = { tag in
+                self.newTodo.tag = tag
                 self.updateLabel(for: indexPath, with: tag)
             }
             navigationController?.pushViewController(vc, animated: true)
         case .priority:
             let vc = PriorityViewController()
             vc.priority = { priority in
-                self.updateLabel(for: indexPath, with: priority)
+                self.newTodo.priority = priority.rawValue
+                self.updateLabel(for: indexPath, with: priority.stringValue)
             }
             navigationController?.pushViewController(vc, animated: true)
         case .addImage:
@@ -134,7 +139,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
     private enum Attributes: String, CaseIterable {
         case titleAndMemo
         case dueDate = "마감일"
-        case tag = "태그"
+        case tag = "테그"
         case priority = "우선 순위"
         case addImage = "이미지 선택"
         
