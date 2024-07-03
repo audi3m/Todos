@@ -12,7 +12,7 @@ class PriorityViewController: BaseViewController {
     
     let segmentPicker = UISegmentedControl()
     var priority: ((String) -> Void)?
-    var selectedPriority: Priority = .low
+    var selectedPriority: Priority = .none
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,9 +36,10 @@ class PriorityViewController: BaseViewController {
     }
     
     override func setUI() { 
-        segmentPicker.insertSegment(withTitle: "낮음", at: 0, animated: false)
-        segmentPicker.insertSegment(withTitle: "보통", at: 1, animated: false)
-        segmentPicker.insertSegment(withTitle: "높음", at: 2, animated: false)
+        segmentPicker.insertSegment(withTitle: "없음", at: 0, animated: false)
+        segmentPicker.insertSegment(withTitle: "낮음", at: 1, animated: false)
+        segmentPicker.insertSegment(withTitle: "보통", at: 2, animated: false)
+        segmentPicker.insertSegment(withTitle: "높음", at: 3, animated: false)
         segmentPicker.addTarget(self, action: #selector(priorityChanged(_:)), for: .valueChanged)
     }
     
@@ -49,12 +50,15 @@ class PriorityViewController: BaseViewController {
 }
 
 enum Priority: Int {
+    case none
     case low
     case medium
     case high
     
     var stringValue: String {
         switch self {
+        case .none:
+            return "없음"
         case .low:
             return "낮음"
         case .medium:

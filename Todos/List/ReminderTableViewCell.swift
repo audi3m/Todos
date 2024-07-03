@@ -73,7 +73,7 @@ class ReminderTableViewCell: BaseTableViewCell {
         guard let data else { return }
         
         let priorityMarks = String(repeating: "!", count: data.priority ?? 0)
-        let fullText = "\(priorityMarks) \(data.title)"
+        let fullText = "\(priorityMarks)" + (data.priority == 0 ? "" : " ") + "\(data.title)"
         
         let attributedString = NSMutableAttributedString(string: fullText)
         

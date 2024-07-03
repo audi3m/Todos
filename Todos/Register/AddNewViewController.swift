@@ -62,9 +62,7 @@ final class AddNewViewController: BaseViewController {
         let text = titleCell.titleTextField.text!
         
         if text.isEmpty {
-            showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") {
-                
-            }
+            showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
             let realm = try! Realm()
             let data = TodoModel(title: text, memo: "메모", dueDate: .now, priority: Int.random(in: 1...3))
@@ -102,19 +100,19 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         case .dueDate:
             let vc = DueDateViewController()
             vc.date = { date in
-                print(date.customFormat())
+                self.updateLabel(for: indexPath, with: date.customFormat())
             }
             navigationController?.pushViewController(vc, animated: true)
         case .tag:
             let vc = TagViewController()
             vc.tag = { tag in
-                print(tag)
+                self.updateLabel(for: indexPath, with: tag)
             }
             navigationController?.pushViewController(vc, animated: true)
         case .priority:
             let vc = PriorityViewController()
             vc.priority = { priority in
-                print(priority)
+                self.updateLabel(for: indexPath, with: priority)
             }
             navigationController?.pushViewController(vc, animated: true)
         case .addImage:
@@ -124,14 +122,13 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         default: break
         }
         
-        
-//        if let vc = attribute.viewController {
-//            vc.data = { value in
-//                self.moneyButton.setTitle(value, for: .normal)
-//            }
-//            navigationController?.pushViewController(vc, animated: true)
-//        }
         tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
+    func updateLabel(for indexPath: IndexPath, with value: String) { 
+        if let cell = tableView.cellForRow(at: indexPath) as? AddNewTableViewCell {
+            cell.attributeValueLabel.text = value
+        }
     }
      
     private enum Attributes: String, CaseIterable {

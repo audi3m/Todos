@@ -11,16 +11,11 @@ import SnapKit
 class TagViewController: BaseViewController {
     
     let tagTextField = UITextField()
-    
     var tag: ((String) -> Void)?
-    
-    
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "테그"
-        
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -42,13 +37,6 @@ class TagViewController: BaseViewController {
     override func setUI() {
         tagTextField.placeholder = "테그"
         tagTextField.backgroundColor = .systemGray6
-    }
-    
-    
-    
-    
-    
-    
-    
+    } 
     
 }

@@ -54,7 +54,6 @@ class AddNewTableViewCell: BaseTableViewCell {
         
         attributeLabel.font = .systemFont(ofSize: 15)
         
-        attributeValueLabel.text = "여기는 값 자리"
         attributeValueLabel.font = .systemFont(ofSize: 15)
         
         arrowImageView.image = UIImage(systemName: "chevron.right")
