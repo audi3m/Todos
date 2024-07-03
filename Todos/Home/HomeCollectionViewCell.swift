@@ -8,82 +8,66 @@
 import UIKit
 import SnapKit
 
-class HomeCollectionViewCell: BaseTableViewCell {
+class HomeCollectionViewCell: BaseCollectionViewCell {
     
-    var data: TodoModel? {
-        didSet {
-            setData()
-        }
-    }
-    
-    let doneCircle = UIImageView()
+    let cellBackground = UIView()
+    let iconImageView = UIImageView()
     let titleLabel = UILabel()
-    let memoLabel = UILabel()
-    let dueDateLabel = UILabel()
+    let countLabel = UILabel()
+    
+    
+    
+    
+    
     
     override func setHierarchy() {
-        contentView.addSubview(doneCircle)
+        contentView.addSubview(cellBackground)
+        contentView.addSubview(iconImageView)
         contentView.addSubview(titleLabel)
-        contentView.addSubview(memoLabel)
-        contentView.addSubview(dueDateLabel)
+        contentView.addSubview(countLabel)
     }
     
     override func setLayout() {
-        doneCircle.snp.makeConstraints { make in
-            make.top.equalTo(contentView).offset(10)
-            make.leading.equalTo(contentView).inset(15)
-            make.size.equalTo(25)
+        
+        cellBackground.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        iconImageView.snp.makeConstraints { make in
+            make.top.leading.equalTo(contentView).inset(10)
+            make.size.equalTo(40)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(doneCircle.snp.trailing).offset(15)
-            make.centerY.equalTo(doneCircle.snp.centerY)
+            make.centerX.equalTo(iconImageView.snp.centerX)
+            make.top.equalTo(iconImageView.snp.bottom).offset(10)
         }
         
-        memoLabel.snp.makeConstraints { make in
-            make.leading.equalTo(doneCircle.snp.trailing).offset(15)
-            make.top.equalTo(titleLabel.snp.bottom).offset(5)
-            
-        }
-        
-        dueDateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(doneCircle.snp.trailing).offset(15)
-            make.top.equalTo(memoLabel.snp.bottom).offset(2)
-            
+        countLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(iconImageView.snp.centerY)
+            make.trailing.equalTo(contentView).offset(-15)
         }
     }
     
     override func setUI() {
         contentView.backgroundColor = .clear
+        cellBackground.layer.cornerRadius = 10
+        cellBackground.backgroundColor = .systemGray4
         
-        doneCircle.image = UIImage(systemName: "circle")
-        doneCircle.tintColor = .gray
+        iconImageView.image = UIImage(systemName: "calendar.circle.fill")
         
-        titleLabel.font = .systemFont(ofSize: 15)
         
-        memoLabel.font = .systemFont(ofSize: 13)
-        memoLabel.textColor = .gray
+        titleLabel.text = "오늘"
+        titleLabel.font = .boldSystemFont(ofSize: 17)
+        titleLabel.textColor = .lightGray
         
-        dueDateLabel.font = .systemFont(ofSize: 13)
-        dueDateLabel.textColor = .gray
+        countLabel.text = "0"
+        countLabel.font = .systemFont(ofSize: 30, weight: .bold)
         
     }
     
-    private func setData() {
-        guard let data else { return }
-        
-        let exclamationMarks = String(repeating: "!", count: data.priority ?? 0)
-        let fullText = "\(exclamationMarks) \(data.title)"
-        
-        let attributedString = NSMutableAttributedString(string: fullText)
-        
-        let exclamationRange = (fullText as NSString).range(of: exclamationMarks)
-        attributedString.addAttribute(.foregroundColor, value: UIColor.systemBlue, range: exclamationRange)
-        
-        self.titleLabel.attributedText = attributedString
-        self.memoLabel.text = data.memo
-        self.dueDateLabel.text = data.dueDate?.formatted()
-    }
+    
+    
     
 }
 
