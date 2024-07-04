@@ -15,11 +15,22 @@ final class ReminderListViewController: BaseViewController {
     
     let realm = try! Realm()
     var list: Results<TodoModel>!
+    var type: SortType
+    
+    init(type: SortType) {
+        self.type = type
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         list = realm.objects(TodoModel.self)
+        print(type)
         
         setNavBar()
         
@@ -84,7 +95,6 @@ final class ReminderListViewController: BaseViewController {
         }
     }
     
-    
 }
 
 extension ReminderListViewController: AddItemViewControllerDelegate {
@@ -117,19 +127,15 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { action, view, completionHandler in
-//            let data = self.realm.object(ofType: TodoModel.self, forPrimaryKey: self.list[indexPath.row].id)!
             try! self.realm.write {
                 self.realm.delete(self.list[indexPath.row])
             }
             tableView.reloadData()
-            
         }
         
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
-    
-    
     
 }

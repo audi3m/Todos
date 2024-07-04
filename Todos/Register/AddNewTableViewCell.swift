@@ -43,7 +43,6 @@ class AddNewTableViewCell: BaseTableViewCell {
             make.centerY.equalToSuperview()
             make.trailing.equalTo(rectangleView.snp.trailing).offset(-15)
         }
-        
     }
     
     override func setUI() {
@@ -58,7 +57,6 @@ class AddNewTableViewCell: BaseTableViewCell {
         
         arrowImageView.image = UIImage(systemName: "chevron.right")
         arrowImageView.tintColor = .white
-        
     }
     
 }

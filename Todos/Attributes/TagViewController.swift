@@ -11,7 +11,7 @@ import SnapKit
 class TagViewController: BaseViewController {
     
     let tagTextField = UITextField()
-    var tag: ((String) -> Void)?
+    var sendTag: ((String) -> Void)?
      
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +20,7 @@ class TagViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        tag?(tagTextField.text ?? "")
+        sendTag?(tagTextField.text ?? "")
     }
     
     override func setHierarchy() {

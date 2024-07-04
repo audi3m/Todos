@@ -10,12 +10,11 @@ import UIKit
 class ImageSelectViewController: BaseViewController {
     
     
-     
+    var sendImage: ((String) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "이미지 선택"
-        
         
     }
     
@@ -31,8 +30,5 @@ class ImageSelectViewController: BaseViewController {
     override func setUI() {
         
     }
-    
-     
-    
     
 }

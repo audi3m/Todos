@@ -11,7 +11,7 @@ import SnapKit
 class PriorityViewController: BaseViewController {
     
     let segmentPicker = UISegmentedControl()
-    var priority: ((Priority) -> Void)?
+    var sendPriority: ((Priority) -> Void)?
     var selectedPriority: Priority = .none
     
     override func viewDidLoad() {
@@ -22,7 +22,7 @@ class PriorityViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        priority?(selectedPriority)
+        sendPriority?(selectedPriority)
     }
     
     override func setHierarchy() {
@@ -67,4 +67,5 @@ enum Priority: Int {
             return "높음"
         }
     }
+    
 }

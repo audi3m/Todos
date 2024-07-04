@@ -12,7 +12,7 @@ class DueDateViewController: BaseViewController {
     
     let datePicker = UIDatePicker()
     
-    var date: ((Date) -> Void)?
+    var sendDate: ((Date) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class DueDateViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        date?(datePicker.date) 
+        sendDate?(datePicker.date) 
     }
     
     
@@ -40,12 +40,5 @@ class DueDateViewController: BaseViewController {
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
     }
-    
-    
-    
-    
-    
-    
-    
     
 }

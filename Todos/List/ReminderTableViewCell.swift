@@ -43,13 +43,11 @@ class ReminderTableViewCell: BaseTableViewCell {
         memoLabel.snp.makeConstraints { make in
             make.leading.equalTo(doneCircle.snp.trailing).offset(15)
             make.top.equalTo(titleLabel.snp.bottom).offset(5)
-            
         }
         
         dueDateLabel.snp.makeConstraints { make in
             make.leading.equalTo(doneCircle.snp.trailing).offset(15)
             make.top.equalTo(memoLabel.snp.bottom).offset(2)
-            
         }
     }
     
@@ -61,7 +59,7 @@ class ReminderTableViewCell: BaseTableViewCell {
         
         titleLabel.font = .systemFont(ofSize: 15)
         
-        memoLabel.font = .systemFont(ofSize: 13)
+        memoLabel.font = .systemFont(ofSize: 14)
         memoLabel.textColor = .gray
         
         dueDateLabel.font = .systemFont(ofSize: 13)

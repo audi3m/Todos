@@ -101,28 +101,30 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         switch attribute {
         case .dueDate:
             let vc = DueDateViewController()
-            vc.date = { date in
+            vc.sendDate = { date in
                 self.newTodo.dueDate = date
                 self.updateLabel(for: indexPath, with: date.customFormat())
             }
             navigationController?.pushViewController(vc, animated: true)
         case .tag:
             let vc = TagViewController()
-            vc.tag = { tag in
+            vc.sendTag = { tag in
                 self.newTodo.tag = tag
                 self.updateLabel(for: indexPath, with: tag)
             }
             navigationController?.pushViewController(vc, animated: true)
         case .priority:
             let vc = PriorityViewController()
-            vc.priority = { priority in
+            vc.sendPriority = { priority in
                 self.newTodo.priority = priority.rawValue
                 self.updateLabel(for: indexPath, with: priority.stringValue)
             }
             navigationController?.pushViewController(vc, animated: true)
         case .addImage:
             let vc = ImageSelectViewController()
-            
+            vc.sendImage = { _ in
+                
+            }
             navigationController?.pushViewController(vc, animated: true)
         default: break
         }
@@ -158,7 +160,6 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
 }
 
 protocol AddItemViewControllerDelegate: AnyObject {

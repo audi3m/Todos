@@ -36,6 +36,7 @@ final class HomeViewController: BaseViewController {
     
     private func setNavBar() {
         navigationItem.title = "전체"
+        navigationController?.navigationBar.prefersLargeTitles = true
         let addNew = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addNewButtonClicked))
         let menu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(menuButtonClicked))
         navigationItem.leftBarButtonItem = addNew
@@ -68,7 +69,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = ReminderListViewController()
+        let type = SortType.allCases[indexPath.item]
+        let vc = ReminderListViewController(type: type)
         navigationController?.pushViewController(vc, animated: true)
     }
     

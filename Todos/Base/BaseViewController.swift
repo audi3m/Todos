@@ -16,6 +16,7 @@ class BaseViewController: UIViewController {
         setHierarchy()
         setLayout()
         setUI()
+        
     }
     
     func setHierarchy() { }

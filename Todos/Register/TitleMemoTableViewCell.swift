@@ -43,7 +43,6 @@ class TitleMemoTableViewCell: BaseTableViewCell {
         memoTextField.snp.makeConstraints { make in
             make.top.equalTo(divider.snp.bottom).offset(15)
             make.horizontalEdges.equalTo(rectangleView).inset(15)
-            
         }
     }
     
@@ -60,11 +59,6 @@ class TitleMemoTableViewCell: BaseTableViewCell {
         memoTextField.font = .systemFont(ofSize: 15)
         
         divider.backgroundColor = .placeholderText
-        
-        
     }
-    
-    
-    
     
 }

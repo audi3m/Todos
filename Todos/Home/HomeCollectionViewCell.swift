@@ -23,7 +23,6 @@ class HomeCollectionViewCell: BaseCollectionViewCell {
     }
     
     override func setLayout() {
-        
         cellBackground.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
