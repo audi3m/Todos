@@ -30,11 +30,22 @@ final class TodoRepository {
         }
     }
     
-    func updateDone(_ data: TodoModel) {
+    func updateIsDone(_ data: TodoModel) {
         do {
             try realm.write {
                 let isDone = data.isDone
                 data.isDone = isDone ? false : true
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func updateIsFlagged(_ data: TodoModel) {
+        do {
+            try realm.write {
+                let isFlagged = data.isFlagged
+                data.isFlagged = isFlagged ? false : true
             }
         } catch {
             print(error)

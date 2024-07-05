@@ -107,6 +107,8 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.id, for: indexPath) as! ReminderTableViewCell
         let data = list[indexPath.row]
         cell.data = data
+        cell.doneButton.tag = indexPath.row
+        cell.doneButton.addTarget(self, action: #selector(doneClicked), for: .touchUpInside)
         return cell
     }
     
@@ -123,8 +125,12 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         deleteAction.image = UIImage(systemName: "trash.fill")
         
         let flagAction = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
-            
-            
+            self.repository.updateIsFlagged(data)
+            if self.type == .flagged {
+                self.tableView.reloadData()
+            } else {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
         }
         flagAction.backgroundColor = .systemOrange
         flagAction.image = UIImage(systemName: "flag.fill")
@@ -140,5 +146,14 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         return configuration
     }
     
+    @objc func doneClicked(sender: UIButton) {
+        let data = list[sender.tag]
+        repository.updateIsDone(data)
+        if type == .completed {
+            tableView.reloadData()
+        } else {
+            tableView.reloadRows(at: [IndexPath(row: sender.tag, section: 0)], with: .automatic)
+        }
+    }
     
 }

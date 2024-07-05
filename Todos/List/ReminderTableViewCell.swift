@@ -68,13 +68,12 @@ final class ReminderTableViewCell: BaseTableViewCell {
         titleLabel.font = .systemFont(ofSize: 15)
         
         memoLabel.font = .systemFont(ofSize: 14)
-        memoLabel.textColor = .gray
+        memoLabel.textColor = .secondaryLabel
         
         dueDateLabel.font = .systemFont(ofSize: 13)
         dueDateLabel.textColor = .gray
         
         flag.tintColor = .systemOrange
-        
         
     }
     
@@ -90,7 +89,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
         
         let date = data.dueDate?.customFormat()
         let tag = data.hashTag
-        let bottomAttribute = customAttribute(colorSet: [.label, .systemCyan], frontText: date, backText: tag)
+        let bottomAttribute = customAttribute(colorSet: [.secondaryLabel, .systemCyan], frontText: date, backText: tag)
         
         titleLabel.attributedText = titleAttribute
         memoLabel.text = data.memo
@@ -102,7 +101,6 @@ final class ReminderTableViewCell: BaseTableViewCell {
     func customAttribute(colorSet: [UIColor], frontText: String?, backText: String?) -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString()
         
-        // Append frontText if it is not nil and not empty
         if let frontText, !frontText.isEmpty {
             let frontAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: colorSet[0]
@@ -111,12 +109,10 @@ final class ReminderTableViewCell: BaseTableViewCell {
             attributedString.append(attributedFrontText)
         }
         
-        // Append space if both frontText and backText are not nil and not empty
         if let frontText, !frontText.isEmpty, let backText, !backText.isEmpty {
             attributedString.append(NSAttributedString(string: " "))
         }
         
-        // Append backText if it is not nil and not empty
         if let backText, !backText.isEmpty {
             let backAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: colorSet[1]
@@ -127,7 +123,5 @@ final class ReminderTableViewCell: BaseTableViewCell {
         
         return attributedString
     }
-    
-    
     
 }
