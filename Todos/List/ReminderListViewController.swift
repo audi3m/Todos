@@ -48,7 +48,7 @@ final class ReminderListViewController: BaseViewController {
                 self.sortByTitle()
             }),
             UIAction(title: "우선순위", image: UIImage(systemName: "123.rectangle"), handler: { _ in
-                self.filterLowPriority()
+                self.sortByPriority()
             })
         ])
         
@@ -57,21 +57,18 @@ final class ReminderListViewController: BaseViewController {
     }
     
     private func sortByDueDate() {
-//        list = realm.objects(TodoModel.self)
-//            .sorted(byKeyPath: "dueDate", ascending: true)
-//        tableView.reloadData()
+        list = list.sorted(byKeyPath: "dueDate", ascending: true)
+        tableView.reloadData()
     }
     
     private func sortByTitle() {
-//        list = realm.objects(TodoModel.self)
-//            .sorted(byKeyPath: "title", ascending: true)
-//        tableView.reloadData()
+        list = list.sorted(byKeyPath: "title", ascending: true)
+        tableView.reloadData()
     }
     
-    private func filterLowPriority() {
-//        list = realm.objects(TodoModel.self)
-//            .where { $0.priority == 1 }
-//        tableView.reloadData()
+    private func sortByPriority() {
+        list = list.sorted(byKeyPath: "priority", ascending: false)
+        tableView.reloadData()
     }
     
     @objc private func addButtonClicked() {
@@ -113,31 +110,35 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let data = self.list[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { action, view, completionHandler in
-            let data = self.list[indexPath.row]
             self.repository.deleteItem(data)
             tableView.reloadData()
         }
         deleteAction.image = UIImage(systemName: "trash.fill")
+        
         let flagAction = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
             
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+            
         }
         flagAction.backgroundColor = .systemOrange
         flagAction.image = UIImage(systemName: "flag.fill")
         
-        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, flagAction])
+        let pinAction = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+            
+            
+        }
+        pinAction.image = UIImage(systemName: "pin.fill")
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, flagAction, pinAction])
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
+    
     
 }

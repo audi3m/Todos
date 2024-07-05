@@ -16,49 +16,54 @@ final class ReminderTableViewCell: BaseTableViewCell {
         }
     }
     
-    let doneCircle = UIButton()
+    let doneButton = UIButton()
     let titleLabel = UILabel()
     let memoLabel = UILabel()
     let dueDateLabel = UILabel()
+    let flag = UIImageView()
     
     override func setHierarchy() {
-        contentView.addSubview(doneCircle)
+        contentView.addSubview(doneButton)
         contentView.addSubview(titleLabel)
         contentView.addSubview(memoLabel)
         contentView.addSubview(dueDateLabel)
+        contentView.addSubview(flag)
     }
     
     override func setLayout() {
-        doneCircle.snp.makeConstraints { make in
+        doneButton.snp.makeConstraints { make in
             make.top.equalTo(contentView).offset(10)
             make.leading.equalTo(contentView).inset(15)
             make.size.equalTo(25)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(doneCircle.snp.trailing).offset(15)
-            make.centerY.equalTo(doneCircle.snp.centerY)
+            make.leading.equalTo(doneButton.snp.trailing).offset(15)
+            make.centerY.equalTo(doneButton.snp.centerY)
         }
         
         memoLabel.snp.makeConstraints { make in
-            make.leading.equalTo(doneCircle.snp.trailing).offset(15)
+            make.leading.equalTo(doneButton.snp.trailing).offset(15)
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
         }
         
         dueDateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(doneCircle.snp.trailing).offset(15)
+            make.leading.equalTo(doneButton.snp.trailing).offset(15)
             make.top.equalTo(memoLabel.snp.bottom).offset(2)
+        }
+        
+        flag.snp.makeConstraints { make in
+            make.trailing.equalTo(contentView).offset(-15)
+            make.centerY.equalTo(doneButton.snp.centerY)
+            make.size.equalTo(20)
         }
     }
     
     override func setUI() {
         contentView.backgroundColor = .clear
+        selectionStyle = .none
         
-        let config = UIImage.SymbolConfiguration(pointSize: 25)
-        let image = UIImage(systemName: data?.isDone ?? false ? "circle.inset.filled" : "circle", withConfiguration: config)
-        doneCircle.setImage(image, for: .normal)
-        
-        doneCircle.tintColor = .gray
+        doneButton.tintColor = .gray
         
         titleLabel.font = .systemFont(ofSize: 15)
         
@@ -68,10 +73,17 @@ final class ReminderTableViewCell: BaseTableViewCell {
         dueDateLabel.font = .systemFont(ofSize: 13)
         dueDateLabel.textColor = .gray
         
+        flag.tintColor = .systemOrange
+        
+        
     }
     
     private func setData() {
         guard let data else { return }
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 25)
+        let doneImage = UIImage(systemName: data.isDone ? "circle.inset.filled" : "circle", withConfiguration: config)
+        doneButton.setImage(doneImage, for: .normal)
          
         let priorityMarks = String(repeating: "!", count: data.priority ?? 0)
         let titleAttribute = customAttribute(colorSet: [.systemBlue, .label], frontText: priorityMarks, backText: data.title)
@@ -80,9 +92,10 @@ final class ReminderTableViewCell: BaseTableViewCell {
         let tag = data.hashTag
         let bottomAttribute = customAttribute(colorSet: [.label, .systemCyan], frontText: date, backText: tag)
         
-        self.titleLabel.attributedText = titleAttribute
-        self.memoLabel.text = data.memo
-        self.dueDateLabel.attributedText = bottomAttribute
+        titleLabel.attributedText = titleAttribute
+        memoLabel.text = data.memo
+        dueDateLabel.attributedText = bottomAttribute
+        flag.image = data.isFlagged ? UIImage(systemName: "flag.fill") : UIImage()
         
     }
     
