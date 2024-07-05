@@ -13,6 +13,8 @@ final class HomeViewController: BaseViewController {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
     let addNewButton = UIButton()
     
+    let repository = TodoRepository()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -77,6 +79,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as! HomeCollectionViewCell
         let type = FilterType.allCases[indexPath.item]
+        cell.countLabel.text = "\(repository.filterCount(filter: type))"
         cell.setData(type: type)
         return cell
     }

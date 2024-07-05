@@ -71,6 +71,22 @@ final class TodoRepository {
         }
     }
     
+    func filterCount(filter: FilterType) -> Int {
+        let originalList = realm.objects(TodoModel.self)
+        switch filter {
+        case .today:
+            return originalList.filter(isToday()).count
+        case .scheduled:
+            return originalList.filter(isScheduled()).count
+        case .all:
+            return originalList.count
+        case .flagged:
+            return originalList.where { $0.isFlagged }.count
+        case .completed:
+            return originalList.where { $0.isDone }.count
+        }
+    }
+    
     func filteredList(filter: FilterType) -> Results<TodoModel> {
         let originalList = realm.objects(TodoModel.self)
         switch filter {
