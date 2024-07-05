@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageSelectViewController: BaseViewController {
+final class ImageSelectViewController: BaseViewController {
     
     
     var sendImage: ((String) -> Void)?

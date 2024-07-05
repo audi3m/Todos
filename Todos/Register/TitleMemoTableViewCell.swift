@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class TitleMemoTableViewCell: BaseTableViewCell {
+final class TitleMemoTableViewCell: BaseTableViewCell {
     
     let rectangleView = UIView()
     let titleTextField = UITextField()
@@ -54,11 +54,22 @@ class TitleMemoTableViewCell: BaseTableViewCell {
         
         titleTextField.placeholder = "제목"
         titleTextField.font = .systemFont(ofSize: 15)
+        titleTextField.delegate = self
         
         memoTextField.placeholder = "메모"
         memoTextField.font = .systemFont(ofSize: 15)
+        memoTextField.delegate = self
         
         divider.backgroundColor = .placeholderText
+    }
+    
+}
+
+extension TitleMemoTableViewCell: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        return true
     }
     
 }

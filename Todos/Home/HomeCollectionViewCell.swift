@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class HomeCollectionViewCell: BaseCollectionViewCell {
+final class HomeCollectionViewCell: BaseCollectionViewCell {
     
     let cellBackground = UIView()
     let iconImageView = UIImageView()
@@ -50,14 +50,14 @@ class HomeCollectionViewCell: BaseCollectionViewCell {
         
         titleLabel.text = "오늘"
         titleLabel.font = .boldSystemFont(ofSize: 16)
-        titleLabel.textColor = .lightGray
+        titleLabel.textColor = .label.withAlphaComponent(0.7)
         
         countLabel.text = "0"
         countLabel.font = .boldSystemFont(ofSize: 30)
         
     }
     
-    func setData(type: SortType) {
+    func setData(type: FilterType) {
         titleLabel.text = type.rawValue
         let config = UIImage.SymbolConfiguration(paletteColors: [.white, type.circleColor])
         iconImageView.image = UIImage(systemName: type.icon)

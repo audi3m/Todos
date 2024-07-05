@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class DueDateViewController: BaseViewController {
+final class DueDateViewController: BaseViewController {
     
     let datePicker = UIDatePicker()
     

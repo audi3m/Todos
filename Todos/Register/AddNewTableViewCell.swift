@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class AddNewTableViewCell: BaseTableViewCell {
+final class AddNewTableViewCell: BaseTableViewCell {
     
     let rectangleView = UIView()
     let attributeLabel = UILabel()

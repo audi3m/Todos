@@ -7,13 +7,14 @@
 
 import UIKit
 import SnapKit
-import RealmSwift
 
 final class AddNewViewController: BaseViewController {
     weak var delegate: AddItemViewControllerDelegate?
     
     let tableView = UITableView()
     var newTodo = TodoModel()
+    
+    let repository = TodoRepository()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,7 @@ final class AddNewViewController: BaseViewController {
         view.backgroundColor = .systemBackground
         tableView.separatorStyle = .none
         tableView.backgroundColor = .systemBackground
+        tableView.keyboardDismissMode = .onDrag
     }
     
     @objc func cancelButtonClicked() {
@@ -58,20 +60,15 @@ final class AddNewViewController: BaseViewController {
     
     @objc func addButtonClicked() {
         let titleCell = tableView.visibleCells.first as! TitleMemoTableViewCell
-        let text = titleCell.titleTextField.text!
-        newTodo.title = text
-        if let memo = titleCell.memoTextField.text {
-            newTodo.memo = memo
-        }
-        
-        if text.isEmpty {
+        let title = titleCell.titleTextField.text!
+        let memo = titleCell.memoTextField.text!
+        newTodo.title = title
+        newTodo.memo = memo
+         
+        if title.isEmpty {
             showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
-            let realm = try! Realm()
-            try! realm.write {
-                realm.add(newTodo)
-                print("Realm Save Success")
-            }
+            repository.createItem(newTodo)
             delegate?.didAddNewItem(true)
             dismiss(animated: true)
         }
@@ -87,10 +84,12 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: TitleMemoTableViewCell.id, for: indexPath) as! TitleMemoTableViewCell
+            cell.selectionStyle = .none
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: AddNewTableViewCell.id, for: indexPath) as! AddNewTableViewCell
             let text = Attributes.allCases[indexPath.row].rawValue
+            cell.selectionStyle = .none
             cell.attributeLabel.text = text
             return cell
         }

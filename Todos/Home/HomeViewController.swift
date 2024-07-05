@@ -7,39 +7,52 @@
 
 import UIKit
 import SnapKit
-import RealmSwift
 
 final class HomeViewController: BaseViewController {
     
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
+    let addNewButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setNavBar()
-         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.id)
-        
     }
     
     override func setHierarchy() {
         view.addSubview(collectionView)
+        view.addSubview(addNewButton)
     }
     
     override func setLayout() {
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        
+        addNewButton.snp.makeConstraints { make in
+            make.leading.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+    }
+    
+    override func setUI() {
+        addNewButton.setTitle(" 새로운 할 일", for: .normal)
+        addNewButton.setTitleColor(.systemBlue, for: .normal)
+        addNewButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold)
+        let image = UIImage(systemName: "plus.circle.fill", withConfiguration: imageConfig)
+        addNewButton.setImage(image, for: .normal)
+        addNewButton.addTarget(self, action: #selector(addNewButtonClicked), for: .touchUpInside)
+        
     }
     
     private func setNavBar() {
         navigationItem.title = "전체"
         navigationController?.navigationBar.prefersLargeTitles = true
-        let addNew = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addNewButtonClicked))
         let menu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(menuButtonClicked))
-        navigationItem.leftBarButtonItem = addNew
         navigationItem.rightBarButtonItem = menu
     }
     
@@ -58,18 +71,18 @@ final class HomeViewController: BaseViewController {
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        SortType.allCases.count
+        FilterType.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as! HomeCollectionViewCell
-        let type = SortType.allCases[indexPath.item]
+        let type = FilterType.allCases[indexPath.item]
         cell.setData(type: type)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let type = SortType.allCases[indexPath.item]
+        let type = FilterType.allCases[indexPath.item]
         let vc = ReminderListViewController(type: type)
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -89,7 +102,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
 }
 
-enum SortType: String, CaseIterable {
+enum FilterType: String, CaseIterable {
     case today = "오늘"
     case scheduled = "예정"
     case all = "전체"

@@ -13,6 +13,8 @@ class TodoModel: Object {
     @Persisted(indexed: true) var title: String
     @Persisted var memo: String?
     @Persisted var dueDate: Date?
+    @Persisted var isFlagged = false
+    @Persisted var isDone = false
     @Persisted var tag: String?
     @Persisted var priority: Int?
     
@@ -23,6 +25,14 @@ class TodoModel: Object {
         self.dueDate = dueDate
         self.tag = tag
         self.priority = priority
+    }
+    
+    var hashTag: String? {
+        if let tag {
+            return "#" + tag
+        } else {
+            return nil
+        }
     }
     
 } 

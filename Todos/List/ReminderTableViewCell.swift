@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class ReminderTableViewCell: BaseTableViewCell {
+final class ReminderTableViewCell: BaseTableViewCell {
     
     var data: TodoModel? {
         didSet {
@@ -16,7 +16,7 @@ class ReminderTableViewCell: BaseTableViewCell {
         }
     }
     
-    let doneCircle = UIImageView()
+    let doneCircle = UIButton()
     let titleLabel = UILabel()
     let memoLabel = UILabel()
     let dueDateLabel = UILabel()
@@ -42,7 +42,7 @@ class ReminderTableViewCell: BaseTableViewCell {
         
         memoLabel.snp.makeConstraints { make in
             make.leading.equalTo(doneCircle.snp.trailing).offset(15)
-            make.top.equalTo(titleLabel.snp.bottom).offset(5)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
         }
         
         dueDateLabel.snp.makeConstraints { make in
@@ -54,7 +54,10 @@ class ReminderTableViewCell: BaseTableViewCell {
     override func setUI() {
         contentView.backgroundColor = .clear
         
-        doneCircle.image = UIImage(systemName: "circle")
+        let config = UIImage.SymbolConfiguration(pointSize: 25)
+        let image = UIImage(systemName: data?.isDone ?? false ? "circle.inset.filled" : "circle", withConfiguration: config)
+        doneCircle.setImage(image, for: .normal)
+        
         doneCircle.tintColor = .gray
         
         titleLabel.font = .systemFont(ofSize: 15)
@@ -69,18 +72,49 @@ class ReminderTableViewCell: BaseTableViewCell {
     
     private func setData() {
         guard let data else { return }
-        
+         
         let priorityMarks = String(repeating: "!", count: data.priority ?? 0)
-        let fullText = "\(priorityMarks)" + (data.priority == 0 ? "" : " ") + "\(data.title)"
+        let titleAttribute = customAttribute(colorSet: [.systemBlue, .label], frontText: priorityMarks, backText: data.title)
         
-        let attributedString = NSMutableAttributedString(string: fullText)
+        let date = data.dueDate?.customFormat()
+        let tag = data.hashTag
+        let bottomAttribute = customAttribute(colorSet: [.label, .systemCyan], frontText: date, backText: tag)
         
-        let priorityRange = (fullText as NSString).range(of: priorityMarks)
-        attributedString.addAttribute(.foregroundColor, value: UIColor.systemBlue, range: priorityRange)
-        
-        self.titleLabel.attributedText = attributedString
+        self.titleLabel.attributedText = titleAttribute
         self.memoLabel.text = data.memo
-        self.dueDateLabel.text = data.dueDate?.formatted()
+        self.dueDateLabel.attributedText = bottomAttribute
+        
     }
+    
+    func customAttribute(colorSet: [UIColor], frontText: String?, backText: String?) -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString()
+        
+        // Append frontText if it is not nil and not empty
+        if let frontText, !frontText.isEmpty {
+            let frontAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: colorSet[0]
+            ]
+            let attributedFrontText = NSAttributedString(string: frontText, attributes: frontAttributes)
+            attributedString.append(attributedFrontText)
+        }
+        
+        // Append space if both frontText and backText are not nil and not empty
+        if let frontText, !frontText.isEmpty, let backText, !backText.isEmpty {
+            attributedString.append(NSAttributedString(string: " "))
+        }
+        
+        // Append backText if it is not nil and not empty
+        if let backText, !backText.isEmpty {
+            let backAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: colorSet[1]
+            ]
+            let attributedBackText = NSAttributedString(string: backText, attributes: backAttributes)
+            attributedString.append(attributedBackText)
+        }
+        
+        return attributedString
+    }
+    
+    
     
 }

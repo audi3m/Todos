@@ -11,13 +11,19 @@ import RealmSwift
 
 final class ReminderListViewController: BaseViewController {
     
-    let tableView = UITableView()
+    lazy var tableView = {
+        let view = UITableView()
+        view.delegate = self
+        view.dataSource = self
+        view.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.id)
+        return view
+    }()
     
-    let realm = try! Realm()
     var list: Results<TodoModel>!
-    var type: SortType
+    var type: FilterType
+    let repository = TodoRepository()
     
-    init(type: SortType) {
+    init(type: FilterType) {
         self.type = type
         super.init(nibName: nil, bundle: nil)
     }
@@ -28,21 +34,12 @@ final class ReminderListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        list = realm.objects(TodoModel.self)
-        print(type)
-        
         setNavBar()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.id)
-        
+        list = repository.filteredList(filter: type)
     }
     
     private func setNavBar() {
-        navigationItem.title = "목록"
-//        let add = UIBarButtonItem(image: .plus, style: .plain, target: self, action: #selector(addButtonClicked))
+        navigationItem.title = type.rawValue
         let addMenu = UIMenu(title: "", options: .displayInline, children: [
             UIAction(title: "마감날짜순", image: UIImage(systemName: "calendar"), handler: { _ in
                 self.sortByDueDate()
@@ -55,27 +52,26 @@ final class ReminderListViewController: BaseViewController {
             })
         ])
         
-//        navigationItem.leftBarButtonItem = add
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: nil, image: .menu, primaryAction: nil, menu: addMenu)
         
     }
     
     private func sortByDueDate() {
-        list = realm.objects(TodoModel.self)
-            .sorted(byKeyPath: "dueDate", ascending: true)
-        tableView.reloadData()
+//        list = realm.objects(TodoModel.self)
+//            .sorted(byKeyPath: "dueDate", ascending: true)
+//        tableView.reloadData()
     }
     
     private func sortByTitle() {
-        list = realm.objects(TodoModel.self)
-            .sorted(byKeyPath: "title", ascending: true)
-        tableView.reloadData()
+//        list = realm.objects(TodoModel.self)
+//            .sorted(byKeyPath: "title", ascending: true)
+//        tableView.reloadData()
     }
     
     private func filterLowPriority() {
-        list = realm.objects(TodoModel.self)
-            .where { $0.priority == 1 }
-        tableView.reloadData()
+//        list = realm.objects(TodoModel.self)
+//            .where { $0.priority == 1 }
+//        tableView.reloadData()
     }
     
     @objc private func addButtonClicked() {
@@ -118,7 +114,7 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -126,14 +122,20 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { action, view, completionHandler in
-            try! self.realm.write {
-                self.realm.delete(self.list[indexPath.row])
-            }
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { action, view, completionHandler in
+            let data = self.list[indexPath.row]
+            self.repository.deleteItem(data)
             tableView.reloadData()
         }
+        deleteAction.image = UIImage(systemName: "trash.fill")
+        let flagAction = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+            
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        flagAction.backgroundColor = .systemOrange
+        flagAction.image = UIImage(systemName: "flag.fill")
         
-        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, flagAction])
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
