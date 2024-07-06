@@ -11,16 +11,21 @@ import SnapKit
 final class TagViewController: BaseViewController {
     
     let tagTextField = UITextField()
-    var sendTag: ((String) -> Void)?
+    var sendTag: ((String?) -> Void)?
      
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "테그"
+        navigationItem.title = "태그"
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        sendTag?(tagTextField.text ?? "")
+        let text = tagTextField.text!
+        if text.isEmptyOrWhiteSpace() {
+            sendTag?(nil)
+        } else {
+            sendTag?(tagTextField.text ?? "")
+        }
     }
     
     override func setHierarchy() {
@@ -35,7 +40,7 @@ final class TagViewController: BaseViewController {
     }
     
     override func setUI() {
-        tagTextField.placeholder = "테그"
+        tagTextField.placeholder = "태그"
         tagTextField.backgroundColor = .systemGray6
     } 
     
