@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import PhotosUI
 import SnapKit
 
 final class AddNewViewController: BaseViewController {
-    weak var delegate: AddItemViewControllerDelegate?
     
     let tableView = UITableView()
     var newTodo = TodoModel()
+    var sendAdded: ((Bool) -> Void)?
     
     let repository = TodoRepository()
     
@@ -32,7 +33,6 @@ final class AddNewViewController: BaseViewController {
         navigationItem.title = "새로운 할 일"
         let cancel = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelButtonClicked))
         let add = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonClicked))
-        
         navigationItem.leftBarButtonItem = cancel
         navigationItem.rightBarButtonItem = add 
     }
@@ -55,6 +55,7 @@ final class AddNewViewController: BaseViewController {
     }
     
     @objc func cancelButtonClicked() {
+        sendAdded?(false)
         dismiss(animated: true)
     }
     
@@ -69,7 +70,7 @@ final class AddNewViewController: BaseViewController {
             showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
             repository.createItem(newTodo)
-            delegate?.didAddNewItem(true)
+            sendAdded?(true)
             dismiss(animated: true)
         }
     }
@@ -84,12 +85,10 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: TitleMemoTableViewCell.id, for: indexPath) as! TitleMemoTableViewCell
-            cell.selectionStyle = .none
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: AddNewTableViewCell.id, for: indexPath) as! AddNewTableViewCell
-            let text = Attributes.allCases[indexPath.row].rawValue
-            cell.selectionStyle = .none
+            let text = Attributes.allCases[indexPath.row].rawValue 
             cell.attributeLabel.text = text
             return cell
         }
@@ -102,7 +101,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             let vc = DueDateViewController()
             vc.sendDate = { date in
                 self.newTodo.dueDate = date
-                self.updateLabel(for: indexPath, with: date.customFormat())
+                self.updateLabel(for: indexPath, with: date?.customFormat())
             }
             navigationController?.pushViewController(vc, animated: true)
         case .tag:
@@ -116,31 +115,44 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             let vc = PriorityViewController()
             vc.sendPriority = { priority in
                 self.newTodo.priority = priority.rawValue
-                self.updateLabel(for: indexPath, with: priority.stringValue)
+                if priority == .none {
+                    self.updateLabel(for: indexPath, with: nil)
+                } else {
+                    self.updateLabel(for: indexPath, with: priority.stringValue)
+                }
             }
             navigationController?.pushViewController(vc, animated: true)
         case .addImage:
-            let vc = ImageSelectViewController()
-            vc.sendImage = { _ in
-                
-            }
-            navigationController?.pushViewController(vc, animated: true)
+            addImageCellClicked()
         default: break
         }
         
-        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
-    func updateLabel(for indexPath: IndexPath, with value: String) { 
+    func addImageCellClicked() {
+        print(#function)
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .any(of: [.screenshots, .images])
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+    
+    func updateLabel(for indexPath: IndexPath, with value: String?) {
         if let cell = tableView.cellForRow(at: indexPath) as? AddNewTableViewCell {
-            cell.attributeValueLabel.text = value
+            if let value {
+                cell.setAttributeValue(type: .hasValue(value: value))
+            } else {
+                cell.setAttributeValue(type: .none)
+            }
         }
     }
      
     private enum Attributes: String, CaseIterable {
         case titleAndMemo
         case dueDate = "마감일"
-        case tag = "테그"
+        case tag = "태그"
         case priority = "우선 순위"
         case addImage = "이미지 선택"
         
@@ -159,6 +171,24 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
+}
+
+extension AddNewViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        
+        if let itemProvider = results.first?.itemProvider,
+           itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                print("2", Thread.isMainThread)
+                DispatchQueue.main.async {
+//                    self.photoImageView.image = image as? UIImage
+                }
+            }
+        }
+    }
+    
+    
 }
 
 protocol AddItemViewControllerDelegate: AnyObject {

@@ -54,9 +54,29 @@ final class AddNewTableViewCell: BaseTableViewCell {
         attributeLabel.font = .systemFont(ofSize: 15)
         
         attributeValueLabel.font = .systemFont(ofSize: 15)
+        attributeValueLabel.text = "없음"
+        attributeValueLabel.textColor = .secondaryLabel
         
         arrowImageView.image = UIImage(systemName: "chevron.right")
         arrowImageView.tintColor = .white
+    }
+    
+    func setAttributeValue(type: ValueType) {
+        DispatchQueue.main.async {
+            switch type {
+            case .none:
+                self.attributeValueLabel.text = "없음"
+                self.attributeValueLabel.textColor = .secondaryLabel
+            case .hasValue(let value):
+                self.attributeValueLabel.text = value
+                self.attributeValueLabel.textColor = .label
+            }
+        }
+    }
+    
+    enum ValueType {
+        case none
+        case hasValue(value: String)
     }
     
 }

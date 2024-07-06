@@ -16,9 +16,9 @@ class TodoModel: Object {
     @Persisted var isFlagged = false
     @Persisted var isDone = false
     @Persisted var tag: String?
-    @Persisted var priority: Int?
+    @Persisted var priority: Int = 0
     
-    convenience init(title: String, memo: String?, dueDate: Date?, tag: String?, priority: Int?) {
+    convenience init(title: String, memo: String?, dueDate: Date?, tag: String?, priority: Int) {
         self.init()
         self.title = title
         self.memo = memo

@@ -48,21 +48,31 @@ final class HomeViewController: BaseViewController {
         let image = UIImage(systemName: "plus.circle.fill", withConfiguration: imageConfig)
         addNewButton.setImage(image, for: .normal)
         addNewButton.addTarget(self, action: #selector(addNewButtonClicked), for: .touchUpInside)
-        
     }
     
     private func setNavBar() {
         navigationItem.title = "전체"
         navigationController?.navigationBar.prefersLargeTitles = true
+        let calendar = UIBarButtonItem(image: UIImage(systemName: "calendar"), style: .plain, target: self, action: #selector(calendarButtonClicked))
         let menu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(menuButtonClicked))
+        navigationItem.leftBarButtonItem = calendar
         navigationItem.rightBarButtonItem = menu
     }
     
     @objc func addNewButtonClicked() {
         let vc = AddNewViewController()
+        vc.sendAdded = { added in
+            if added {
+                self.collectionView.reloadData()
+            }
+        }
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)
+    }
+    
+    @objc func calendarButtonClicked() {
+        
     }
     
     @objc func menuButtonClicked() {
@@ -87,6 +97,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let type = FilterType.allCases[indexPath.item]
         let vc = ReminderListViewController(type: type)
+        vc.sendUpdated = { updated in
+            if updated {
+                collectionView.reloadData()
+            }
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
     
