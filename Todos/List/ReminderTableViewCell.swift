@@ -61,7 +61,6 @@ final class ReminderTableViewCell: BaseTableViewCell {
     
     override func setUI() {
         contentView.backgroundColor = .clear
-        selectionStyle = .none
         
         doneButton.tintColor = .gray
         

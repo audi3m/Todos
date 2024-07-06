@@ -23,6 +23,9 @@ final class ReminderListViewController: BaseViewController {
     var type: FilterType
     let repository = TodoRepository()
     
+    var isUpdated = false
+    var sendUpdated: ((Bool) -> Void)?
+    
     init(type: FilterType) {
         self.type = type
         super.init(nibName: nil, bundle: nil)
@@ -36,6 +39,10 @@ final class ReminderListViewController: BaseViewController {
         super.viewDidLoad()
         setNavBar()
         list = repository.filteredList(filter: type)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        sendUpdated?(isUpdated)
     }
     
     private func setNavBar() {
@@ -73,7 +80,6 @@ final class ReminderListViewController: BaseViewController {
     
     @objc private func addButtonClicked() {
         let vc = AddNewViewController()
-        vc.delegate = self
         let nav = UINavigationController(rootViewController: vc)
         present(nav, animated: true)
     }
@@ -88,14 +94,6 @@ final class ReminderListViewController: BaseViewController {
         }
     }
     
-}
-
-extension ReminderListViewController: AddItemViewControllerDelegate {
-    func didAddNewItem(_ added: Bool) {
-        if added {
-            tableView.reloadData()
-        }
-    }
 }
 
 extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -120,12 +118,14 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         let data = self.list[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { action, view, completionHandler in
             self.repository.deleteItem(data)
+            self.isUpdated = true
             tableView.reloadData()
         }
         deleteAction.image = UIImage(systemName: "trash.fill")
         
         let flagAction = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
             self.repository.updateIsFlagged(data)
+            self.isUpdated = true
             if self.type == .flagged {
                 self.tableView.reloadData()
             } else {
@@ -149,6 +149,7 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
     @objc func doneClicked(sender: UIButton) {
         let data = list[sender.tag]
         repository.updateIsDone(data)
+        isUpdated = true
         if type == .completed {
             tableView.reloadData()
         } else {
