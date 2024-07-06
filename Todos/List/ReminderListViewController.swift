@@ -103,8 +103,8 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.id, for: indexPath) as! ReminderTableViewCell
-        let data = list[indexPath.row]
-        cell.data = data
+        let item = list[indexPath.row]
+        cell.data = item
         cell.doneButton.tag = indexPath.row
         cell.doneButton.addTarget(self, action: #selector(doneClicked), for: .touchUpInside)
         return cell
@@ -112,6 +112,12 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = list[indexPath.row]
+        let vc = DetailViewController(item: item)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

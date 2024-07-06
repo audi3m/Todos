@@ -15,6 +15,8 @@ final class AddNewViewController: BaseViewController {
     var newTodo = TodoModel()
     var sendAdded: ((Bool) -> Void)?
     
+    var toDoImage: UIImage?
+    
     let repository = TodoRepository()
     
     override func viewDidLoad() {
@@ -70,6 +72,9 @@ final class AddNewViewController: BaseViewController {
             showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
             repository.createItem(newTodo)
+            if let toDoImage {
+                saveImageToDocument(image: toDoImage, filename: "\(newTodo.id)")
+            }
             sendAdded?(true)
             dismiss(animated: true)
         }
@@ -180,17 +185,17 @@ extension AddNewViewController: PHPickerViewControllerDelegate {
         if let itemProvider = results.first?.itemProvider,
            itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                print("2", Thread.isMainThread)
+                self.toDoImage = image as? UIImage
                 DispatchQueue.main.async {
-//                    self.photoImageView.image = image as? UIImage
+                    if let cell = self.tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as? AddNewTableViewCell {
+                        cell.attributeValueLabel.isHidden = true
+                        cell.selectedImageView.isHidden = false
+                        cell.selectedImageView.image = image as? UIImage
+                    }
                 }
             }
         }
     }
-    
-    
 }
 
-protocol AddItemViewControllerDelegate: AnyObject {
-    func didAddNewItem(_ added: Bool)
-}
+

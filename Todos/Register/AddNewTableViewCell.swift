@@ -13,12 +13,14 @@ final class AddNewTableViewCell: BaseTableViewCell {
     let rectangleView = UIView()
     let attributeLabel = UILabel()
     let attributeValueLabel = UILabel()
+    let selectedImageView = UIImageView()
     let arrowImageView = UIImageView()
     
     override func setHierarchy() {
         contentView.addSubview(rectangleView)
-        rectangleView.addSubview(attributeValueLabel)
         rectangleView.addSubview(attributeLabel)
+        rectangleView.addSubview(attributeValueLabel)
+        rectangleView.addSubview(selectedImageView)
         rectangleView.addSubview(arrowImageView)
     }
     
@@ -37,6 +39,14 @@ final class AddNewTableViewCell: BaseTableViewCell {
         attributeValueLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalTo(arrowImageView.snp.leading).offset(-20)
+            make.width.lessThanOrEqualTo(200)
+        }
+        
+        selectedImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(arrowImageView.snp.leading).offset(-20)
+            make.width.equalTo(100)
+            make.height.equalTo(40)
         }
         
         arrowImageView.snp.makeConstraints { make in
@@ -56,6 +66,10 @@ final class AddNewTableViewCell: BaseTableViewCell {
         attributeValueLabel.font = .systemFont(ofSize: 15)
         attributeValueLabel.text = "없음"
         attributeValueLabel.textColor = .secondaryLabel
+        
+        selectedImageView.contentMode = .scaleAspectFill
+        selectedImageView.clipsToBounds = true
+        selectedImageView.isHidden = true
         
         arrowImageView.image = UIImage(systemName: "chevron.right")
         arrowImageView.tintColor = .white

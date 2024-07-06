@@ -27,19 +27,37 @@ final class DetailViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = item.title
+        navigationItem.largeTitleDisplayMode = .never
         
     }
     
     override func setHierarchy() {
-        
+        view.addSubview(todoImageView)
+        view.addSubview(titleLabel)
     }
     
     override func setLayout() {
+        todoImageView.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(250)
+        }
         
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(todoImageView.snp.bottom).offset(10)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
     }
     
     override func setUI() {
+        if let image = loadImageFromDocument(filename: "\(item.id)") {
+            todoImageView.image = image
+        }
         
+        todoImageView.contentMode = .scaleAspectFill
+        todoImageView.clipsToBounds = true
+        
+        titleLabel.text = item.title
     }
     
     

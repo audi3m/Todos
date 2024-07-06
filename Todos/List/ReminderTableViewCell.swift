@@ -40,16 +40,19 @@ final class ReminderTableViewCell: BaseTableViewCell {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(doneButton.snp.trailing).offset(15)
             make.centerY.equalTo(doneButton.snp.centerY)
+            make.width.lessThanOrEqualTo(250)
         }
         
         memoLabel.snp.makeConstraints { make in
             make.leading.equalTo(doneButton.snp.trailing).offset(15)
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.width.lessThanOrEqualTo(250)
         }
         
         dueDateLabel.snp.makeConstraints { make in
             make.leading.equalTo(doneButton.snp.trailing).offset(15)
             make.top.equalTo(memoLabel.snp.bottom).offset(2)
+            make.width.lessThanOrEqualTo(250)
         }
         
         flag.snp.makeConstraints { make in
@@ -83,7 +86,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
         let doneImage = UIImage(systemName: data.isDone ? "circle.inset.filled" : "circle", withConfiguration: config)
         doneButton.setImage(doneImage, for: .normal)
          
-        let priorityMarks = String(repeating: "!", count: data.priority ?? 0)
+        let priorityMarks = String(repeating: "!", count: data.priority)
         let titleAttribute = customAttribute(colorSet: [.systemBlue, .label], frontText: priorityMarks, backText: data.title)
         
         let date = data.dueDate?.customFormat()

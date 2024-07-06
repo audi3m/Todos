@@ -13,6 +13,10 @@ final class TodoRepository {
     // 싱글톤으로 이미 작동함
     private let realm = try! Realm()
     
+    func printPath() {
+        print(realm.configuration.fileURL ?? "")
+    }
+    
     func fetchAll() -> Results<TodoModel> {
         let list = realm.objects(TodoModel.self).sorted(byKeyPath: "dueDate", ascending: false)
         print(realm.configuration.fileURL ?? "")

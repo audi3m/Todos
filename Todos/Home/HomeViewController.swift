@@ -17,6 +17,7 @@ final class HomeViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        repository.printPath()
         
         setNavBar()
         collectionView.delegate = self
@@ -42,7 +43,7 @@ final class HomeViewController: BaseViewController {
     override func setUI() {
         addNewButton.setTitle(" 새로운 할 일", for: .normal)
         addNewButton.setTitleColor(.systemBlue, for: .normal)
-        addNewButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        addNewButton.titleLabel?.font = .systemFont(ofSize: 20)
         
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold)
         let image = UIImage(systemName: "plus.circle.fill", withConfiguration: imageConfig)
@@ -54,9 +55,7 @@ final class HomeViewController: BaseViewController {
         navigationItem.title = "전체"
         navigationController?.navigationBar.prefersLargeTitles = true
         let calendar = UIBarButtonItem(image: UIImage(systemName: "calendar"), style: .plain, target: self, action: #selector(calendarButtonClicked))
-        let menu = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(menuButtonClicked))
         navigationItem.leftBarButtonItem = calendar
-        navigationItem.rightBarButtonItem = menu
     }
     
     @objc func addNewButtonClicked() {
@@ -68,14 +67,11 @@ final class HomeViewController: BaseViewController {
         }
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
+        nav.isModalInPresentation = true
         present(nav, animated: true)
     }
     
     @objc func calendarButtonClicked() {
-        
-    }
-    
-    @objc func menuButtonClicked() {
         
     }
     
