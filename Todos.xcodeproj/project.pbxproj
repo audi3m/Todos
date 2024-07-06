@@ -35,6 +35,7 @@
 		D42746362C3792030014FB1F /* HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42746352C3792030014FB1F /* HideKeyboard.swift */; };
 		D42746382C391A790014FB1F /* String+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42746372C391A790014FB1F /* String+Ex.swift */; };
 		D427463A2C3985CB0014FB1F /* FileManager+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42746392C3985CB0014FB1F /* FileManager+Ex.swift */; };
+		D427463C2C3990160014FB1F /* UILabel+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D427463B2C3990160014FB1F /* UILabel+Ex.swift */; };
 		D48770FD2C3681A40053BAF0 /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48770FC2C3681A40053BAF0 /* TodoRepository.swift */; };
 		D48771002C3682D60053BAF0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48770FF2C3682D60053BAF0 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -81,6 +82,7 @@
 		D42746352C3792030014FB1F /* HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboard.swift; sourceTree = "<group>"; };
 		D42746372C391A790014FB1F /* String+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ex.swift"; sourceTree = "<group>"; };
 		D42746392C3985CB0014FB1F /* FileManager+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Ex.swift"; sourceTree = "<group>"; };
+		D427463B2C3990160014FB1F /* UILabel+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Ex.swift"; sourceTree = "<group>"; };
 		D48770FC2C3681A40053BAF0 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		D48770FF2C3682D60053BAF0 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,11 +186,12 @@
 		D41AC4A12C341F74002A0D34 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D41AC4A22C341F81002A0D34 /* UIImage+Ex.swift */,
-				D42746372C391A790014FB1F /* String+Ex.swift */,
-				D42746352C3792030014FB1F /* HideKeyboard.swift */,
-				D41AC4B42C35A435002A0D34 /* Date+Ex.swift */,
 				D42746392C3985CB0014FB1F /* FileManager+Ex.swift */,
+				D41AC4A22C341F81002A0D34 /* UIImage+Ex.swift */,
+				D427463B2C3990160014FB1F /* UILabel+Ex.swift */,
+				D42746372C391A790014FB1F /* String+Ex.swift */,
+				D41AC4B42C35A435002A0D34 /* Date+Ex.swift */,
+				D42746352C3792030014FB1F /* HideKeyboard.swift */,
 				D41AC4A42C341FB1002A0D34 /* id.swift */,
 			);
 			path = Extensions;
@@ -309,6 +312,7 @@
 				D48771002C3682D60053BAF0 /* DetailViewController.swift in Sources */,
 				D41AC4A02C341B66002A0D34 /* TitleMemoTableViewCell.swift in Sources */,
 				D41AC4B32C35849F002A0D34 /* ImageSelectViewController.swift in Sources */,
+				D427463C2C3990160014FB1F /* UILabel+Ex.swift in Sources */,
 				D41AC49A2C3418A7002A0D34 /* HomeCollectionViewCell.swift in Sources */,
 				D41AC48F2C33DE48002A0D34 /* TodoModel.swift in Sources */,
 				D41AC4B52C35A435002A0D34 /* Date+Ex.swift in Sources */,

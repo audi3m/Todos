@@ -14,7 +14,8 @@ final class DetailViewController: BaseViewController {
     let item: TodoModel
     
     let todoImageView = UIImageView()
-    let titleLabel = UILabel()
+    let titleLabel = PaddedLabel()
+    let memoLabel = PaddedLabel()
     
     init(item: TodoModel) {
         self.item = item
@@ -27,14 +28,17 @@ final class DetailViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = item.title
+        navigationItem.title = "상세 화면"
         navigationItem.largeTitleDisplayMode = .never
+        
+        setData()
         
     }
     
     override func setHierarchy() {
         view.addSubview(todoImageView)
         view.addSubview(titleLabel)
+        view.addSubview(memoLabel)
     }
     
     override func setLayout() {
@@ -44,23 +48,43 @@ final class DetailViewController: BaseViewController {
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(todoImageView.snp.bottom).offset(10)
+            make.top.equalTo(todoImageView.snp.bottom).offset(20)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        
+        memoLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
     
     override func setUI() {
-        if let image = loadImageFromDocument(filename: "\(item.id)") {
-            todoImageView.image = image
-        }
+        
         
         todoImageView.contentMode = .scaleAspectFill
         todoImageView.clipsToBounds = true
         
         titleLabel.text = item.title
+        
+        memoLabel.font = .systemFont(ofSize: 15)
+        memoLabel.numberOfLines = 0
+        
+        
     }
     
-    
-    
+    func setData() {
+        if let image = loadImageFromDocument(filename: "\(item.id)") {
+            todoImageView.image = image
+        } else {
+            todoImageView.isHidden = true
+        }
+        
+        if let memo = item.memo {
+            memoLabel.text = memo
+            memoLabel.isHidden = false
+        } else {
+            memoLabel.isHidden = true
+        }
+    }
     
 }
