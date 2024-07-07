@@ -76,6 +76,7 @@ final class AddNewViewController: BaseViewController {
         newTodo.title = title
         newTodo.memo = memo
         
+        
         if title.isEmpty {
             showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
@@ -119,6 +120,8 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    
+    // 설정화면에서 돌아왔을 때 오류
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let attribute = Attributes.allCases[indexPath.row]
         switch attribute {

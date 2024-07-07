@@ -80,12 +80,6 @@ final class ReminderListViewController: BaseViewController {
         tableView.reloadData()
     }
     
-//    @objc private func addButtonClicked() {
-//        let vc = AddNewViewController()
-//        let nav = UINavigationController(rootViewController: vc)
-//        present(nav, animated: true)
-//    }
-    
     override func setHierarchy() {
         view.addSubview(tableView)
     }

@@ -160,6 +160,7 @@ final class DetailViewController: BaseViewController {
         vc.item = item
         vc.sendAdded = { added in
             if added {
+                self.isUpdated = true
                 self.setData()
             }
         }
