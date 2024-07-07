@@ -28,8 +28,7 @@ class PaddedLabel: UILabel {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = .systemGray6
-        layer.cornerRadius = 8
+        layer.cornerRadius = 10
         clipsToBounds = true 
     }
 }

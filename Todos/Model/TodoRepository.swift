@@ -34,6 +34,27 @@ final class TodoRepository {
         }
     }
     
+    func updateItem(_ oldItem: TodoModel, with newItem: TodoModel) {
+        guard let oldItemInRealm = realm.object(ofType: TodoModel.self, forPrimaryKey: oldItem.id) else { return }
+        
+        do {
+            try realm.write {
+                
+                oldItemInRealm.title = newItem.title
+                oldItemInRealm.memo = newItem.memo
+                oldItemInRealm.dueDate = newItem.dueDate
+                oldItemInRealm.tag = newItem.tag
+                oldItemInRealm.priority = newItem.priority
+                oldItemInRealm.isDone = newItem.isDone
+                oldItemInRealm.isFlagged = newItem.isFlagged
+                
+                realm.add(oldItemInRealm, update: .modified)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
     func updateIsDone(_ data: TodoModel) {
         do {
             try realm.write {
@@ -88,10 +109,12 @@ final class TodoRepository {
             return originalList.where { $0.isFlagged }.count
         case .completed:
             return originalList.where { $0.isDone }.count
+        case .withQuery:
+            return 0
         }
     }
     
-    func filteredList(filter: FilterType) -> Results<TodoModel> {
+    func filteredList(filter: FilterType, query: String) -> Results<TodoModel> {
         let originalList = realm.objects(TodoModel.self)
         switch filter {
         case .today:
@@ -104,7 +127,14 @@ final class TodoRepository {
             return originalList.where { $0.isFlagged }
         case .completed:
             return originalList.where { $0.isDone }
+        case .withQuery:
+            return originalList.filter(doesContain(query: query))
         }
+    }
+    
+    func doesContain(query: String) -> NSPredicate {
+        let predicate = NSPredicate(format: "title CONTAINS[c] %@ OR memo CONTAINS[c] %@", query, query)
+        return predicate
     }
     
     func isToday() -> NSPredicate {

@@ -6,14 +6,17 @@
 //
 
 import UIKit
+import FSCalendar
 import SnapKit
 
 final class HomeViewController: BaseViewController {
     
+//    let searchController = UISearchController(searchResultsController: ReminderListViewController(type: .withQuery, query: "ㅎ"))
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
     let addNewButton = UIButton()
     
     let repository = TodoRepository()
+    fileprivate weak var calendar: FSCalendar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,8 +55,11 @@ final class HomeViewController: BaseViewController {
     }
     
     private func setNavBar() {
-        navigationItem.title = "전체"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "All"
+//        navigationItem.searchController = searchController
+//        searchController.searchResultsUpdater = self
+//        searchController.searchBar.placeholder = "검색"
+        
         let calendar = UIBarButtonItem(image: UIImage(systemName: "calendar"), style: .plain, target: self, action: #selector(calendarButtonClicked))
         navigationItem.leftBarButtonItem = calendar
     }
@@ -72,27 +78,57 @@ final class HomeViewController: BaseViewController {
     }
     
     @objc func calendarButtonClicked() {
-        
+        let calendar = FSCalendar(frame: CGRect(x: 30, y: 30, width: 320, height: 300))
+        calendar.delegate = self
+        calendar.dataSource = self
+        view.addSubview(calendar)
+        self.calendar = calendar
+        self.calendar.backgroundColor = .white
     }
     
 }
 
+//extension HomeViewController: UISearchResultsUpdating {
+//    func updateSearchResults(for searchController: UISearchController) {
+//        guard let text = searchController.searchBar.text else { return }
+//        
+//    }
+//    
+//    
+//}
+
+extension HomeViewController: FSCalendarDelegate, FSCalendarDataSource {
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        1
+    }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        let startDay = Calendar.current.startOfDay(for: date)
+        let endDay: Date = Calendar.current.date(byAdding: .day, value: 1, to: startDay) ?? Date()
+        let predicate = NSPredicate(format: "regDate >= %@ && regDate < %@",
+                                    startDay as NSDate,
+                                    endDay as NSDate)
+        
+        
+    }
+}
+
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        FilterType.allCases.count
+        FilterType.allCases.prefix(5).count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as! HomeCollectionViewCell
-        let type = FilterType.allCases[indexPath.item]
+        let type = FilterType.allCases.prefix(5)[indexPath.item]
         cell.countLabel.text = "\(repository.filterCount(filter: type))"
         cell.setData(type: type)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let type = FilterType.allCases[indexPath.item]
-        let vc = ReminderListViewController(type: type)
+        let type = FilterType.allCases.prefix(5)[indexPath.item]
+        let vc = ReminderListViewController(type: type, query: "")
         vc.sendUpdated = { updated in
             if updated {
                 collectionView.reloadData()
@@ -122,6 +158,7 @@ enum FilterType: String, CaseIterable {
     case all = "전체"
     case flagged = "깃발 표시"
     case completed = "완료됨"
+    case withQuery = ""
     
     var circleColor: UIColor {
         switch self {
@@ -135,6 +172,8 @@ enum FilterType: String, CaseIterable {
             return .systemOrange
         case .completed:
             return .lightGray
+        case .withQuery:
+            return .clear
         }
     }
     
@@ -150,6 +189,8 @@ enum FilterType: String, CaseIterable {
             "flag.circle.fill"
         case .completed:
             "checkmark.circle.fill"
+        case .withQuery:
+            ""
         }
     }
 }

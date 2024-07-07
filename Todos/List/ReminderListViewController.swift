@@ -21,13 +21,15 @@ final class ReminderListViewController: BaseViewController {
     
     var list: Results<TodoModel>!
     var type: FilterType
+    let query: String
     let repository = TodoRepository()
     
     var isUpdated = false
     var sendUpdated: ((Bool) -> Void)?
     
-    init(type: FilterType) {
+    init(type: FilterType, query: String) {
         self.type = type
+        self.query = query
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,7 +40,7 @@ final class ReminderListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavBar()
-        list = repository.filteredList(filter: type)
+        list = repository.filteredList(filter: type, query: query)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -78,11 +80,11 @@ final class ReminderListViewController: BaseViewController {
         tableView.reloadData()
     }
     
-    @objc private func addButtonClicked() {
-        let vc = AddNewViewController()
-        let nav = UINavigationController(rootViewController: vc)
-        present(nav, animated: true)
-    }
+//    @objc private func addButtonClicked() {
+//        let vc = AddNewViewController()
+//        let nav = UINavigationController(rootViewController: vc)
+//        present(nav, animated: true)
+//    }
     
     override func setHierarchy() {
         view.addSubview(tableView)
@@ -111,12 +113,18 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        80
+        85
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
         let vc = DetailViewController(item: item)
+        vc.updated = { isUpdated in
+            if isUpdated {
+                self.isUpdated = true
+                tableView.reloadData()
+            }
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
     
