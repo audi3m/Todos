@@ -17,7 +17,7 @@ final class PriorityViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "우선 순위"
-        segmentPicker.selectedSegmentIndex = 0
+        segmentPicker.selectedSegmentIndex = selectedPriority.rawValue
     }
     
     override func viewWillDisappear(_ animated: Bool) {

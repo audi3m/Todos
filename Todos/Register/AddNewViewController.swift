@@ -16,14 +16,17 @@ final class AddNewViewController: BaseViewController {
     var sendAdded: ((Bool) -> Void)?
     var item: TodoModel?
     
+    var notAppeared = true
+    
     var toDoImage: UIImage?
     
     let repository = TodoRepository()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setNavBar()
+        
+        setValuesForEditMode(item: item)
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -34,9 +37,11 @@ final class AddNewViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         print(#function)
-        if let item {
+        if notAppeared {
             setValuesForEditMode(item: item)
+            notAppeared = false
         }
+        
     }
     
     private func setNavBar() {
@@ -76,7 +81,6 @@ final class AddNewViewController: BaseViewController {
         newTodo.title = title
         newTodo.memo = memo
         
-        
         if title.isEmpty {
             showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
@@ -96,7 +100,6 @@ final class AddNewViewController: BaseViewController {
             dismiss(animated: true)
         }
     }
-     
 }
 
 extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
@@ -120,8 +123,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    
-    // 설정화면에서 돌아왔을 때 오류
+    // 설정화면에서 돌아왔을 때 에러
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let attribute = Attributes.allCases[indexPath.row]
         switch attribute {
@@ -132,7 +134,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             }
             vc.sendDate = { date in
                 self.newTodo.dueDate = date
-                self.updateLabel(for: indexPath, with: date?.customFormat())
+                self.updateLabel(for: indexPath, with: date?.customFormat() ?? nil)
             }
             navigationController?.pushViewController(vc, animated: true)
         case .tag:
@@ -169,7 +171,8 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func setValuesForEditMode(item: TodoModel) {
+    func setValuesForEditMode(item: TodoModel?) {
+        guard let item else { return }
         self.updateLabel(for: IndexPath(row: 1, section: 0), with: item.dueDate?.customFormat())
         self.updateLabel(for: IndexPath(row: 2, section: 0), with: item.tag)
         self.updateLabel(for: IndexPath(row: 3, section: 0), with: Priority(rawValue: item.priority)?.stringValue)
@@ -180,6 +183,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectedImageView.isHidden = false
             cell.selectedImageView.image = image
         }
+        
     }
     
     func addImageCellClicked() {
