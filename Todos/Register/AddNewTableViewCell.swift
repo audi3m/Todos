@@ -26,7 +26,7 @@ final class AddNewTableViewCell: BaseTableViewCell {
     
     override func setLayout() {
         rectangleView.snp.makeConstraints { make in
-            make.horizontalEdges.equalTo(contentView.safeAreaLayoutGuide).inset(15)
+            make.horizontalEdges.equalTo(contentView.safeAreaLayoutGuide).inset(20)
             make.verticalEdges.equalTo(contentView.safeAreaLayoutGuide).inset(10)
             make.height.equalTo(50)
         }

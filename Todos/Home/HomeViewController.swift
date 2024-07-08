@@ -13,7 +13,8 @@ final class HomeViewController: BaseViewController {
     
 //    let searchController = UISearchController(searchResultsController: ReminderListViewController(type: .withQuery, query: "ㅎ"))
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
-    private let addNewButton = UIButton()
+    private let addNewToDoButton = UIButton()
+    private let addNewFolderButton = UIButton()
     
     let repository = TodoRepository()
     fileprivate weak var calendar: FSCalendar!
@@ -30,7 +31,8 @@ final class HomeViewController: BaseViewController {
     
     override func setHierarchy() {
         view.addSubview(collectionView)
-        view.addSubview(addNewButton)
+        view.addSubview(addNewToDoButton)
+        view.addSubview(addNewFolderButton)
     }
     
     override func setLayout() {
@@ -38,20 +40,29 @@ final class HomeViewController: BaseViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        addNewButton.snp.makeConstraints { make in
+        addNewToDoButton.snp.makeConstraints { make in
             make.leading.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        
+        addNewFolderButton.snp.makeConstraints { make in
+            make.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
     
     override func setUI() {
-        addNewButton.setTitle(" 새로운 할 일", for: .normal)
-        addNewButton.setTitleColor(.systemBlue, for: .normal)
-        addNewButton.titleLabel?.font = .systemFont(ofSize: 20)
+        addNewToDoButton.setTitle(" 새로운 할 일", for: .normal)
+        addNewToDoButton.setTitleColor(.systemBlue, for: .normal)
+        addNewToDoButton.titleLabel?.font = .systemFont(ofSize: 20)
         
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold)
-        let image = UIImage(systemName: "plus.circle.fill", withConfiguration: imageConfig)
-        addNewButton.setImage(image, for: .normal)
-        addNewButton.addTarget(self, action: #selector(addNewButtonClicked), for: .touchUpInside)
+        let toDoButtonConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold)
+        let image = UIImage(systemName: "plus.circle.fill", withConfiguration: toDoButtonConfig)
+        addNewToDoButton.setImage(image, for: .normal)
+        addNewToDoButton.addTarget(self, action: #selector(addNewButtonClicked), for: .touchUpInside)
+        
+        addNewFolderButton.setTitle("목록 추가", for: .normal)
+        addNewFolderButton.setTitleColor(.systemBlue, for: .normal)
+        addNewFolderButton.titleLabel?.font = .systemFont(ofSize: 17)
+        addNewFolderButton.addTarget(self, action: #selector(addNewFolderClicked), for: .touchUpInside)
     }
     
     private func setNavBar() {
@@ -62,6 +73,14 @@ final class HomeViewController: BaseViewController {
         
         let calendar = UIBarButtonItem(image: UIImage(systemName: "calendar"), style: .plain, target: self, action: #selector(calendarButtonClicked))
         navigationItem.leftBarButtonItem = calendar
+    }
+    
+    @objc private func addNewFolderClicked() {
+        let vc = AddNewFolderViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        nav.isModalInPresentation = true
+        present(nav, animated: true)
     }
     
     @objc private func addNewButtonClicked() {
