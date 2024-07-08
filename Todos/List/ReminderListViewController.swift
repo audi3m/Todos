@@ -11,7 +11,7 @@ import RealmSwift
 
 final class ReminderListViewController: BaseViewController {
     
-    lazy var tableView = {
+    private lazy var tableView = {
         let view = UITableView()
         view.delegate = self
         view.dataSource = self
@@ -19,12 +19,12 @@ final class ReminderListViewController: BaseViewController {
         return view
     }()
     
-    var list: Results<TodoModel>!
-    var type: FilterType
-    let query: String
+    private var list: Results<TodoModel>!
+    private var type: FilterType
+    private let query: String
     let repository = TodoRepository()
     
-    var isUpdated = false
+    private var isUpdated = false
     var sendUpdated: ((Bool) -> Void)?
     
     init(type: FilterType, query: String) {
@@ -154,7 +154,7 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         return configuration
     }
     
-    @objc func doneClicked(sender: UIButton) {
+    @objc private func doneClicked(sender: UIButton) {
         let data = list[sender.tag]
         repository.updateIsDone(data)
         isUpdated = true

@@ -10,7 +10,7 @@ import SnapKit
 
 final class HomeCollectionViewCell: BaseCollectionViewCell {
     
-    let cellBackground = UIView()
+    private let cellBackground = UIView()
     let iconImageView = UIImageView()
     let titleLabel = UILabel()
     let countLabel = UILabel()

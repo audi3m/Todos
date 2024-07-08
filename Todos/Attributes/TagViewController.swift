@@ -11,8 +11,8 @@ import SnapKit
 final class TagViewController: BaseViewController {
     
     let tagTextField = UITextField()
-    let underBar = UIView()
-    let deleteTagButton = UIButton()
+    private  let underBar = UIView()
+    private let deleteTagButton = UIButton()
     
     var sendTag: ((String?) -> Void)?
      

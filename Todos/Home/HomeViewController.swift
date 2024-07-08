@@ -12,8 +12,8 @@ import SnapKit
 final class HomeViewController: BaseViewController {
     
 //    let searchController = UISearchController(searchResultsController: ReminderListViewController(type: .withQuery, query: "ㅎ"))
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
-    let addNewButton = UIButton()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
+    private let addNewButton = UIButton()
     
     let repository = TodoRepository()
     fileprivate weak var calendar: FSCalendar!
@@ -64,7 +64,7 @@ final class HomeViewController: BaseViewController {
         navigationItem.leftBarButtonItem = calendar
     }
     
-    @objc func addNewButtonClicked() {
+    @objc private func addNewButtonClicked() {
         let vc = AddNewViewController()
         vc.sendAdded = { added in
             if added {
@@ -77,7 +77,7 @@ final class HomeViewController: BaseViewController {
         present(nav, animated: true)
     }
     
-    @objc func calendarButtonClicked() {
+    @objc private func calendarButtonClicked() {
         let calendar = FSCalendar(frame: CGRect(x: 30, y: 30, width: 320, height: 300))
         calendar.delegate = self
         calendar.dataSource = self

@@ -11,12 +11,12 @@ import SnapKit
 
 final class AddNewViewController: BaseViewController {
     
-    let tableView = UITableView()
+    private let tableView = UITableView()
     var newTodo = TodoModel()
     var sendAdded: ((Bool) -> Void)?
     var item: TodoModel?
     
-    var notAppeared = true
+    private var notAppeared = true
     
     var toDoImage: UIImage?
     
@@ -69,12 +69,12 @@ final class AddNewViewController: BaseViewController {
         tableView.keyboardDismissMode = .onDrag
     }
     
-    @objc func cancelButtonClicked() {
+    @objc private func cancelButtonClicked() {
         sendAdded?(false)
         dismiss(animated: true)
     }
     
-    @objc func addButtonClicked() {
+    @objc private func addButtonClicked() {
         let titleCell = tableView.visibleCells.first as! TitleMemoTableViewCell
         let title = titleCell.titleTextField.text!
         let memo = titleCell.memoTextField.text!
@@ -171,7 +171,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func setValuesForEditMode(item: TodoModel?) {
+    private func setValuesForEditMode(item: TodoModel?) {
         guard let item else { return }
         self.updateLabel(for: IndexPath(row: 1, section: 0), with: item.dueDate?.customFormat())
         self.updateLabel(for: IndexPath(row: 2, section: 0), with: item.tag)
@@ -186,7 +186,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func addImageCellClicked() {
+    private func addImageCellClicked() {
         print(#function)
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 1
@@ -196,7 +196,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         present(picker, animated: true)
     }
     
-    func updateLabel(for indexPath: IndexPath, with value: String?) {
+    private func updateLabel(for indexPath: IndexPath, with value: String?) {
         if let cell = tableView.cellForRow(at: indexPath) as? AddNewTableViewCell {
             if let value {
                 cell.setAttributeValue(type: .hasValue(value: value))
@@ -221,8 +221,6 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
                 return TagViewController()
             case .priority:
                 return PriorityViewController()
-            case .addImage:
-                return ImageSelectViewController()
             default:
                 return nil
             }

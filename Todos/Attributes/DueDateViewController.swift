@@ -11,7 +11,7 @@ import SnapKit
 final class DueDateViewController: BaseViewController {
     
     let datePicker = UIDatePicker()
-    let noDueDateButton = UIButton()
+    private let noDueDateButton = UIButton()
     
     var selectedDate: Date?
     var sendDate: ((Date?) -> Void)?

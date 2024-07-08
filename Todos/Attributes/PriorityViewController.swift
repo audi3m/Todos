@@ -10,7 +10,7 @@ import SnapKit
 
 final class PriorityViewController: BaseViewController {
     
-    let segmentPicker = UISegmentedControl()
+    private let segmentPicker = UISegmentedControl()
     var sendPriority: ((Priority) -> Void)?
     var selectedPriority: Priority = .none
     

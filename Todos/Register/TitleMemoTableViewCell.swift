@@ -10,9 +10,9 @@ import SnapKit
 
 final class TitleMemoTableViewCell: BaseTableViewCell {
     
-    let rectangleView = UIView()
+    private  let rectangleView = UIView()
     let titleTextField = UITextField()
-    let divider = UIView()
+    private let divider = UIView()
     let memoTextField = UITextField()
     
     override func setHierarchy() {

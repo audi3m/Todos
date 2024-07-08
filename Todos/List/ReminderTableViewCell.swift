@@ -100,7 +100,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
         
     }
     
-    func customAttribute(colorSet: [UIColor], frontText: String?, backText: String?) -> NSMutableAttributedString {
+    private func customAttribute(colorSet: [UIColor], frontText: String?, backText: String?) -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString()
         
         if let frontText, !frontText.isEmpty {

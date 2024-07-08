@@ -13,7 +13,7 @@ final class DetailViewController: BaseViewController {
     let repository = TodoRepository()
     let item: TodoModel
     
-    var isUpdated = false
+    private var isUpdated = false
     var updated: ((Bool) -> Void)?
     
     private let topStackView = {
@@ -130,7 +130,7 @@ final class DetailViewController: BaseViewController {
         
     }
     
-    func setData() {
+    private func setData() {
         if let image = loadImageFromDocument(filename: "\(item.id)") {
             todoImageView.isHidden = false
             todoImageView.image = image
@@ -155,7 +155,7 @@ final class DetailViewController: BaseViewController {
         }
     }
     
-    @objc func editButtonClicked() {
+    @objc private func editButtonClicked() {
         let vc = AddNewViewController()
         vc.item = item
         vc.sendAdded = { added in
@@ -170,7 +170,7 @@ final class DetailViewController: BaseViewController {
         present(nav, animated: true)
     }
     
-    @objc func deleteButtonClicked() {
+    @objc private func deleteButtonClicked() {
         showAlertWithChoice(title: "할 일 삭제", message: "\"\(item.title)\" (을/를) 삭제하시겠습니까?", ok: "확인") {
             self.repository.deleteItem(self.item)
             self.isUpdated = true
@@ -178,13 +178,13 @@ final class DetailViewController: BaseViewController {
         }
     }
     
-    @objc func doneButtonClicked() {
+    @objc private func doneButtonClicked() {
         repository.updateIsDone(item)
         updateDoneButtonImage()
         isUpdated = true
     }
     
-    @objc func flagButtonClicked() {
+    @objc private func flagButtonClicked() {
         repository.updateIsFlagged(item)
         updateFlagButtonImage()
         isUpdated = true

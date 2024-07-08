@@ -29,7 +29,6 @@
 		D41AC4AD2C3580AC002A0D34 /* DueDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4AC2C3580AC002A0D34 /* DueDateViewController.swift */; };
 		D41AC4AF2C3580F2002A0D34 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4AE2C3580F2002A0D34 /* TagViewController.swift */; };
 		D41AC4B12C358102002A0D34 /* PriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4B02C358102002A0D34 /* PriorityViewController.swift */; };
-		D41AC4B32C35849F002A0D34 /* ImageSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4B22C35849F002A0D34 /* ImageSelectViewController.swift */; };
 		D41AC4B52C35A435002A0D34 /* Date+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41AC4B42C35A435002A0D34 /* Date+Ex.swift */; };
 		D42746332C3775200014FB1F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D41AC4832C33DD78002A0D34 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D42746362C3792030014FB1F /* HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42746352C3792030014FB1F /* HideKeyboard.swift */; };
@@ -78,7 +77,6 @@
 		D41AC4AC2C3580AC002A0D34 /* DueDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DueDateViewController.swift; sourceTree = "<group>"; };
 		D41AC4AE2C3580F2002A0D34 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		D41AC4B02C358102002A0D34 /* PriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewController.swift; sourceTree = "<group>"; };
-		D41AC4B22C35849F002A0D34 /* ImageSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelectViewController.swift; sourceTree = "<group>"; };
 		D41AC4B42C35A435002A0D34 /* Date+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ex.swift"; sourceTree = "<group>"; };
 		D42746352C3792030014FB1F /* HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboard.swift; sourceTree = "<group>"; };
 		D42746372C391A790014FB1F /* String+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ex.swift"; sourceTree = "<group>"; };
@@ -205,7 +203,6 @@
 				D41AC4AC2C3580AC002A0D34 /* DueDateViewController.swift */,
 				D41AC4AE2C3580F2002A0D34 /* TagViewController.swift */,
 				D41AC4B02C358102002A0D34 /* PriorityViewController.swift */,
-				D41AC4B22C35849F002A0D34 /* ImageSelectViewController.swift */,
 			);
 			path = Attributes;
 			sourceTree = "<group>";
@@ -315,7 +312,6 @@
 				D427463A2C3985CB0014FB1F /* FileManager+Ex.swift in Sources */,
 				D48771002C3682D60053BAF0 /* DetailViewController.swift in Sources */,
 				D41AC4A02C341B66002A0D34 /* TitleMemoTableViewCell.swift in Sources */,
-				D41AC4B32C35849F002A0D34 /* ImageSelectViewController.swift in Sources */,
 				D427463C2C3990160014FB1F /* UILabel+Ex.swift in Sources */,
 				D41AC49A2C3418A7002A0D34 /* HomeCollectionViewCell.swift in Sources */,
 				D41AC48F2C33DE48002A0D34 /* TodoModel.swift in Sources */,

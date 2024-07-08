@@ -10,11 +10,11 @@ import SnapKit
 
 final class AddNewTableViewCell: BaseTableViewCell {
     
-    let rectangleView = UIView()
+    private let rectangleView = UIView()
     let attributeLabel = UILabel()
     let attributeValueLabel = UILabel()
     let selectedImageView = UIImageView()
-    let arrowImageView = UIImageView()
+    private let arrowImageView = UIImageView()
     
     override func setHierarchy() {
         contentView.addSubview(rectangleView)
