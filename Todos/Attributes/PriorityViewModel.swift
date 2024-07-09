@@ -9,7 +9,7 @@ import Foundation
 
 final class PriorityViewModel {
     
-    var inputPriority: Observable<Priority?> = Observable(nil)
+    var inputPriority: Observable<Priority> = Observable(.none)
     var outputPriorityText: Observable<String?> = Observable(nil)
     
     init(_ priority: Priority) {
@@ -21,7 +21,7 @@ final class PriorityViewModel {
     }
     
     private func validation() {
-        guard let priority = inputPriority.value else { return }
+        let priority = inputPriority.value
         outputPriorityText.value = priority.stringValue
     }
     
