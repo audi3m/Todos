@@ -11,13 +11,10 @@ final class DueDateViewModel {
     
     var inputDate: Observable<Date?> = Observable(nil)
     var outputDateText: Observable<String?> = Observable(nil)
-    var date: Date?
     
-    init() {
+    init(_ date: Date?) {
         print("ViewModel init")
-        if let date {
-            inputDate.value = date
-        }
+        inputDate.value = date
         inputDate.bind { _ in
             self.validation()
         }

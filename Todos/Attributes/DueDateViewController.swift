@@ -10,7 +10,7 @@ import SnapKit
 
 final class DueDateViewController: BaseViewController {
     
-    let viewModel = DueDateViewModel()
+    let viewModel = DueDateViewModel(.now)
     
     let datePicker = UIDatePicker()
     let selectedDateLabel = UILabel()
@@ -22,6 +22,7 @@ final class DueDateViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "마감일"
+        viewModel.inputDate.value = datePicker.date
         bindData()
     }
     
