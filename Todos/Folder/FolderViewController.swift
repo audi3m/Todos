@@ -11,7 +11,7 @@ import RealmSwift
 final class FolderViewController: BaseViewController {
     
     var folder: Folder!
-    var list: List<TodoModel>!
+    var list: Results<TodoModel>!
     let todoRepository = TodoRepository()
     
     let tableView = UITableView()
@@ -27,7 +27,7 @@ final class FolderViewController: BaseViewController {
     }
     
     func fetchData() {
-        list = folder.toDoList
+        list = todoRepository.fetchByFolder(folder: folder)
         
         tableView.reloadData()
     }
@@ -56,6 +56,7 @@ final class FolderViewController: BaseViewController {
     
     @objc private func addNewTodo() {
         let vc = AddNewViewController()
+        vc.folder = folder
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
         nav.isModalInPresentation = true

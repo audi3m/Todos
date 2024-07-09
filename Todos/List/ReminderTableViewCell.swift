@@ -21,6 +21,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
     let memoLabel = UILabel()
     let dueDateLabel = UILabel()
     let flag = UIImageView()
+    let folderLabel = UILabel()
     
     override func setHierarchy() {
         contentView.addSubview(doneButton)
@@ -28,6 +29,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
         contentView.addSubview(memoLabel)
         contentView.addSubview(dueDateLabel)
         contentView.addSubview(flag)
+        contentView.addSubview(folderLabel)
     }
     
     override func setLayout() {
@@ -59,6 +61,10 @@ final class ReminderTableViewCell: BaseTableViewCell {
             make.trailing.equalTo(contentView).offset(-15)
             make.centerY.equalTo(doneButton.snp.centerY)
             make.size.equalTo(20)
+        }
+        
+        folderLabel.snp.makeConstraints { make in
+            make.trailing.bottom.equalTo(contentView).inset(10)
         }
     }
     
@@ -97,6 +103,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
         memoLabel.text = data.memo
         dueDateLabel.attributedText = bottomAttribute
         flag.image = data.isFlagged ? UIImage(systemName: "flag.fill") : UIImage()
+        folderLabel.text = data.folder.first?.name
         
     }
     
