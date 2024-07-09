@@ -64,7 +64,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
         }
         
         folderLabel.snp.makeConstraints { make in
-            make.trailing.bottom.equalTo(contentView).inset(10)
+            make.trailing.bottom.equalTo(contentView).inset(20)
         }
     }
     
@@ -82,6 +82,8 @@ final class ReminderTableViewCell: BaseTableViewCell {
         dueDateLabel.textColor = .gray
         
         flag.tintColor = .systemOrange
+        
+        folderLabel.font = .systemFont(ofSize: 13)
         
     }
     

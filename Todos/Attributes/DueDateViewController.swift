@@ -10,7 +10,10 @@ import SnapKit
 
 final class DueDateViewController: BaseViewController {
     
+    let viewModel = DueDateViewModel()
+    
     let datePicker = UIDatePicker()
+    let selectedDateLabel = UILabel()
     private let noDueDateButton = UIButton()
     
     var selectedDate: Date?
@@ -19,7 +22,13 @@ final class DueDateViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "마감일"
-        selectedDate = datePicker.date
+        bindData()
+    }
+    
+    func bindData() {
+        viewModel.outputDateText.bind { value in
+            self.selectedDateLabel.text = value
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -27,9 +36,9 @@ final class DueDateViewController: BaseViewController {
         sendDate?(selectedDate)
     }
     
-    
     override func setHierarchy() {
         view.addSubview(datePicker)
+        view.addSubview(selectedDateLabel)
         view.addSubview(noDueDateButton)
     }
     
@@ -38,8 +47,13 @@ final class DueDateViewController: BaseViewController {
             make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
         }
         
+        selectedDateLabel.snp.makeConstraints { make in
+            make.top.equalTo(datePicker.snp.bottom).offset(20)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        
         noDueDateButton.snp.makeConstraints { make in
-            make.top.equalTo(datePicker.snp.bottom).offset(30)
+            make.top.equalTo(selectedDateLabel.snp.bottom).offset(30)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.height.equalTo(50)
         }
@@ -48,11 +62,18 @@ final class DueDateViewController: BaseViewController {
     override func setUI() {
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
+        self.datePicker.addTarget(self, action: #selector(onDateValueChanged(_:)), for: .valueChanged)
         
         noDueDateButton.setTitle("마감일 삭제", for: .normal)
         noDueDateButton.backgroundColor = .systemRed
         noDueDateButton.layer.cornerRadius = 10
         noDueDateButton.addTarget(self, action: #selector(deleteDueDate), for: .touchUpInside)
+    }
+    
+    
+    @objc private func onDateValueChanged(_ datePicker: UIDatePicker) {
+        print(#function)
+        viewModel.inputDate.value = datePicker.date
     }
     
     @objc private func deleteDueDate() {
