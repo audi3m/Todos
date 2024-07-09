@@ -16,12 +16,13 @@ final class HomeViewController: BaseViewController {
     private let addNewToDoButton = UIButton()
     private let addNewFolderButton = UIButton()
     
-    let repository = TodoRepository()
+    let toDoRepository = TodoRepository()
+    let folderRepository = FolderRepository()
     fileprivate weak var calendar: FSCalendar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        repository.printPath()
+        toDoRepository.printPath()
         
         setNavBar()
         collectionView.delegate = self
@@ -66,13 +67,35 @@ final class HomeViewController: BaseViewController {
     }
     
     private func setNavBar() {
-        navigationItem.title = "All"
-//        navigationItem.searchController = searchController
-//        searchController.searchResultsUpdater = self
-//        searchController.searchBar.placeholder = "검색"
+        navigationItem.title = "할 일"
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        //        navigationItem.searchController = searchController
+        //        searchController.searchResultsUpdater = self
+        //        searchController.searchBar.placeholder = "검색"
+        let folderMenu = createFolderMenu()
         
         let calendar = UIBarButtonItem(image: UIImage(systemName: "calendar"), style: .plain, target: self, action: #selector(calendarButtonClicked))
+        let folder = UIBarButtonItem(title: nil, image: UIImage(systemName: "folder"), primaryAction: nil, menu: folderMenu)
         navigationItem.leftBarButtonItem = calendar
+        navigationItem.rightBarButtonItem = folder
+    }
+    
+    func createFolderMenu() -> UIMenu {
+        let folders = folderRepository.fetchFolders()
+        var actions = [UIAction]()
+        
+        for folder in folders {
+            let action = UIAction(title: folder.name, image: nil, handler: { [weak self] _ in
+                let vc = FolderViewController()
+                vc.folder = folder
+                self?.navigationController?.pushViewController(vc, animated: true)
+            })
+            actions.append(action)
+        }
+        
+        return UIMenu(title: "", options: .displayInline, children: actions)
     }
     
     @objc private func addNewFolderClicked() {
@@ -94,6 +117,10 @@ final class HomeViewController: BaseViewController {
         nav.modalPresentationStyle = .formSheet
         nav.isModalInPresentation = true
         present(nav, animated: true)
+    }
+    
+    @objc private func folderButtonClicked() {
+        
     }
     
     @objc private func calendarButtonClicked() {
@@ -140,7 +167,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as! HomeCollectionViewCell
         let type = FilterType.allCases.prefix(5)[indexPath.item]
-        cell.countLabel.text = "\(repository.filterCount(filter: type))"
+        cell.countLabel.text = "\(toDoRepository.filterCount(filter: type))"
         cell.setData(type: type)
         return cell
     }

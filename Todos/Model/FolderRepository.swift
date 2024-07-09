@@ -27,6 +27,16 @@ final class FolderRepository {
         return list
     }
     
+    func addItem(_ folder: Folder, newTodo: TodoModel) {
+        do {
+            try realm.write {
+                folder.toDoList.append(newTodo)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
     func updateFolder(_ data: Folder, newName: String) {
         do {
             try realm.write {

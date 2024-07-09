@@ -23,6 +23,11 @@ final class TodoRepository {
         return list
     }
     
+    func fetchByFolder(folder: Folder) -> Results<TodoModel> {
+        let list = realm.objects(TodoModel.self).where { $0.folder == folder }
+        return list
+    }
+    
     func createItem(_ data: TodoModel) {
         do {
             try realm.write {

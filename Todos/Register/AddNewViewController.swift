@@ -15,12 +15,14 @@ final class AddNewViewController: BaseViewController {
     var newTodo = TodoModel()
     var sendAdded: ((Bool) -> Void)?
     var item: TodoModel?
+    var folder: Folder?
     
     private var notAppeared = true
     
     var toDoImage: UIImage?
     
-    let repository = TodoRepository()
+    let todoRepository = TodoRepository()
+    let folderRepository = FolderRepository()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,13 +86,18 @@ final class AddNewViewController: BaseViewController {
         if title.isEmpty {
             showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
+            // 편집
             if let item = self.item {
-                repository.updateItem(item, with: newTodo)
+                todoRepository.updateItem(item, with: newTodo)
                 if let toDoImage = self.toDoImage {
                     saveImageToDocument(image: toDoImage, filename: "\(item.id)")
                 }
             } else {
-                repository.createItem(newTodo)
+                // 새로운 할 일
+                if let folder {
+                    folderRepository.addItem(folder, newTodo: newTodo)
+                }
+                todoRepository.createItem(newTodo)
                 if let toDoImage = self.toDoImage {
                     saveImageToDocument(image: toDoImage, filename: "\(newTodo.id)")
                 }
