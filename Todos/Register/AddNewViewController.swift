@@ -11,6 +11,8 @@ import SnapKit
 
 final class AddNewViewController: BaseViewController {
     
+    let imageViewModel = ImageSelectViewModel()
+    
     private let tableView = UITableView()
     var newTodo = TodoModel()
     var sendAdded: ((Bool) -> Void)?
@@ -27,7 +29,6 @@ final class AddNewViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavBar()
-        
         setValuesForEditMode(item: item)
         
         tableView.delegate = self
@@ -43,7 +44,6 @@ final class AddNewViewController: BaseViewController {
             setValuesForEditMode(item: item)
             notAppeared = false
         }
-        
     }
     
     private func setNavBar() {
@@ -169,9 +169,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             }
             navigationController?.pushViewController(vc, animated: true)
         case .addImage:
-            if item != nil {
-                
-            }
+            if item != nil { }
             addImageCellClicked()
         default: break
         }
@@ -190,7 +188,6 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectedImageView.isHidden = false
             cell.selectedImageView.image = image
         }
-        
     }
     
     private func addImageCellClicked() {
@@ -239,8 +236,7 @@ extension AddNewViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         
-        if let itemProvider = results.first?.itemProvider,
-           itemProvider.canLoadObject(ofClass: UIImage.self) {
+        if let itemProvider = results.first?.itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
                 self.toDoImage = image as? UIImage
                 DispatchQueue.main.async {
@@ -254,7 +250,6 @@ extension AddNewViewController: PHPickerViewControllerDelegate {
         }
     }
 }
-
 
 extension AddNewViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

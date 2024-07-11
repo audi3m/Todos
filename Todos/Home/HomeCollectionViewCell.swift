@@ -46,7 +46,7 @@ final class HomeCollectionViewCell: BaseCollectionViewCell {
     override func setUI() {
         contentView.backgroundColor = .clear
         cellBackground.layer.cornerRadius = 10
-        cellBackground.backgroundColor = .systemGray4
+        cellBackground.backgroundColor = .systemGray6
         
         titleLabel.text = "오늘"
         titleLabel.font = .boldSystemFont(ofSize: 16)

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FSCalendar
 import SnapKit
 
 final class HomeViewController: BaseViewController {
@@ -18,7 +17,6 @@ final class HomeViewController: BaseViewController {
     
     let toDoRepository = TodoRepository()
     let folderRepository = FolderRepository()
-    fileprivate weak var calendar: FSCalendar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +51,7 @@ final class HomeViewController: BaseViewController {
     override func setUI() {
         addNewToDoButton.setTitle(" 새로운 할 일", for: .normal)
         addNewToDoButton.setTitleColor(.systemBlue, for: .normal)
-        addNewToDoButton.titleLabel?.font = .systemFont(ofSize: 20)
+        addNewToDoButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
         
         let toDoButtonConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold)
         let image = UIImage(systemName: "plus.circle.fill", withConfiguration: toDoButtonConfig)
@@ -62,7 +60,7 @@ final class HomeViewController: BaseViewController {
         
         addNewFolderButton.setTitle("목록 추가", for: .normal)
         addNewFolderButton.setTitleColor(.systemBlue, for: .normal)
-        addNewFolderButton.titleLabel?.font = .systemFont(ofSize: 17)
+        addNewFolderButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
         addNewFolderButton.addTarget(self, action: #selector(addNewFolderClicked), for: .touchUpInside)
     }
     
@@ -124,12 +122,8 @@ final class HomeViewController: BaseViewController {
     }
     
     @objc private func calendarButtonClicked() {
-        let calendar = FSCalendar(frame: CGRect(x: 30, y: 30, width: 320, height: 300))
-        calendar.delegate = self
-        calendar.dataSource = self
-        view.addSubview(calendar)
-        self.calendar = calendar
-        self.calendar.backgroundColor = .white
+        let vc = CalendarListViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
@@ -143,21 +137,6 @@ final class HomeViewController: BaseViewController {
 //    
 //}
 
-extension HomeViewController: FSCalendarDelegate, FSCalendarDataSource {
-    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        1
-    }
-    
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        let startDay = Calendar.current.startOfDay(for: date)
-        let endDay: Date = Calendar.current.date(byAdding: .day, value: 1, to: startDay) ?? Date()
-        let predicate = NSPredicate(format: "regDate >= %@ && regDate < %@",
-                                    startDay as NSDate,
-                                    endDay as NSDate)
-        
-        
-    }
-}
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
