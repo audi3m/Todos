@@ -22,7 +22,8 @@ final class DueDateViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "마감일"
-        viewModel.inputDate.value = datePicker.date
+        selectedDate = datePicker.date
+        viewModel.inputDate.value = selectedDate
         bindData()
     }
     
@@ -74,7 +75,8 @@ final class DueDateViewController: BaseViewController {
     
     @objc private func onDateValueChanged(_ datePicker: UIDatePicker) {
         print(#function)
-        viewModel.inputDate.value = datePicker.date
+        selectedDate = datePicker.date
+        viewModel.inputDate.value = selectedDate
     }
     
     @objc private func deleteDueDate() {

@@ -100,7 +100,7 @@ final class HomeViewController: BaseViewController {
         let vc = AddNewFolderViewController()
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
-        nav.isModalInPresentation = true
+//        nav.isModalInPresentation = true
         present(nav, animated: true)
     }
     
@@ -123,6 +123,11 @@ final class HomeViewController: BaseViewController {
     
     @objc private func calendarButtonClicked() {
         let vc = CalendarListViewController()
+        vc.sendUpdated = { isUpdated in
+            if isUpdated {
+                self.collectionView.reloadData()
+            }
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
     

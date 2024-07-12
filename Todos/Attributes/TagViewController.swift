@@ -60,7 +60,6 @@ final class TagViewController: BaseViewController {
     
     override func setUI() {
         tagTextField.placeholder = "#태그"
-        tagTextField.backgroundColor = .systemGray6
         tagTextField.delegate = self
         
         underBar.backgroundColor = .placeholderText

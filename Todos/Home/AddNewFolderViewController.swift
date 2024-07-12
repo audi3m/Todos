@@ -18,7 +18,6 @@ final class AddNewFolderViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavBar()
-        
     }
     
     private func setNavBar() {
@@ -43,17 +42,14 @@ final class AddNewFolderViewController: BaseViewController {
         nameTextField.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
         }
-        
-        
     }
     
     override func setUI() {
         rectangleView.layer.cornerRadius = 10
-        rectangleView.backgroundColor = .systemGray4
+        rectangleView.backgroundColor = .systemGray6
         
         nameTextField.placeholder = "폴더 이름을 입력하세요"
         nameTextField.delegate = self
-        
     }
     
     @objc private func cancelButtonClicked() {
@@ -62,13 +58,17 @@ final class AddNewFolderViewController: BaseViewController {
     
     @objc private func addButtonClicked() {
         let name = nameTextField.text!
+        guard !name.isEmptyOrWhiteSpace() else {
+            showAlert(title: "폴더 이름을 입력하세요", message: "폴더를 추가하려면 이름을 입력하세요", ok: "확인") {
+                self.nameTextField.text = ""
+            }
+            return
+        }
         let newFolder = Folder()
         newFolder.name = name
         repository.createItem(newFolder)
         dismiss(animated: true)
     }
-    
-    
 }
 
 extension AddNewFolderViewController: UITextFieldDelegate {

@@ -105,7 +105,7 @@ final class TodoRepository {
         let originalList = realm.objects(TodoModel.self)
         switch filter {
         case .today:
-            return originalList.filter(isToday()).count
+            return originalList.filter(isInDate(Date())).count
         case .scheduled:
             return originalList.filter(isScheduled()).count
         case .all:
@@ -123,7 +123,7 @@ final class TodoRepository {
         let originalList = realm.objects(TodoModel.self)
         switch filter {
         case .today:
-            return originalList.filter(isToday())
+            return originalList.filter(isInDate(Date()))
         case .scheduled:
             return originalList.filter(isScheduled())
         case .all:
@@ -142,10 +142,9 @@ final class TodoRepository {
         return predicate
     }
     
-    func isToday() -> NSPredicate {
-        let today = Date()
+    func isInDate(_ date: Date) -> NSPredicate {
         let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: today)
+        let startOfDay = calendar.startOfDay(for: date)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)?.addingTimeInterval(-1)
         let predicate = NSPredicate(format: "dueDate >= %@ AND dueDate < %@", argumentArray: [startOfDay, endOfDay!])
         return predicate
