@@ -13,15 +13,17 @@ final class AddNewViewController: BaseViewController {
     
     let imageViewModel = ImageSelectViewModel()
     
+    let viewModel = ItemViewModel()
+    
     private let tableView = UITableView()
     var newTodo = TodoModel()
     var sendAdded: ((Bool) -> Void)?
     var item: TodoModel?
     var folder: Folder?
+     
+    var selectedImage: UIImage?
     
     private var notAppeared = true
-    
-    var toDoImage: UIImage?
     
     let todoRepository = TodoRepository()
     let folderRepository = FolderRepository()
@@ -35,6 +37,15 @@ final class AddNewViewController: BaseViewController {
         tableView.dataSource = self
         tableView.register(TitleMemoTableViewCell.self, forCellReuseIdentifier: TitleMemoTableViewCell.id)
         tableView.register(AddNewTableViewCell.self, forCellReuseIdentifier: AddNewTableViewCell.id)
+        
+        bindData()
+        
+    }
+    
+    private func bindData() {
+        viewModel.outputItem.bind { item in
+            
+        }
         
     }
     
@@ -89,7 +100,7 @@ final class AddNewViewController: BaseViewController {
             // 편집
             if let item = self.item {
                 todoRepository.updateItem(item, with: newTodo)
-                if let toDoImage = self.toDoImage {
+                if let toDoImage = self.selectedImage {
                     saveImageToDocument(image: toDoImage, filename: "\(item.id)")
                 }
             } else {
@@ -98,7 +109,7 @@ final class AddNewViewController: BaseViewController {
                     folderRepository.addItem(folder, newTodo: newTodo)
                 }
                 todoRepository.createItem(newTodo)
-                if let toDoImage = self.toDoImage {
+                if let toDoImage = self.selectedImage {
                     saveImageToDocument(image: toDoImage, filename: "\(newTodo.id)")
                 }
             }
@@ -130,18 +141,17 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // 설정화면에서 돌아왔을 때 에러
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let attribute = Attributes.allCases[indexPath.row]
         switch attribute {
         case .dueDate:
             let vc = DueDateViewController()
-            if let item {
-                vc.datePicker.date = item.dueDate ?? .now
-            }
+            var currentDate = item?.dueDate
+            vc.datePicker.date = currentDate ?? .now
             vc.sendDate = { date in
-                self.newTodo.dueDate = date
-                self.updateLabel(for: indexPath, with: date?.customFormat() ?? nil)
+                currentDate = date
+                self.newTodo.dueDate = currentDate
+                self.updateLabel(for: indexPath, with: currentDate?.customFormat() ?? nil)
             }
             navigationController?.pushViewController(vc, animated: true)
         case .tag:
@@ -173,7 +183,6 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             addImageCellClicked()
         default: break
         }
-        
     }
     
     private func setValuesForEditMode(item: TodoModel?) {
@@ -183,7 +192,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         self.updateLabel(for: IndexPath(row: 3, section: 0), with: Priority(rawValue: item.priority)?.stringValue)
         if let image = loadImageFromDocument(filename: "\(item.id)"),
            let cell = self.tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as? AddNewTableViewCell {
-            toDoImage = image
+            selectedImage = image
             cell.attributeValueLabel.isHidden = true
             cell.selectedImageView.isHidden = false
             cell.selectedImageView.image = image
@@ -238,7 +247,7 @@ extension AddNewViewController: PHPickerViewControllerDelegate {
         
         if let itemProvider = results.first?.itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                self.toDoImage = image as? UIImage
+                self.selectedImage = image as? UIImage
                 DispatchQueue.main.async {
                     if let cell = self.tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as? AddNewTableViewCell {
                         cell.attributeValueLabel.isHidden = true

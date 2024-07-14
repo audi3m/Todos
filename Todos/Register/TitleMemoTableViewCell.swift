@@ -50,7 +50,7 @@ final class TitleMemoTableViewCell: BaseTableViewCell {
         contentView.backgroundColor = .clear
         
         rectangleView.layer.cornerRadius = 10
-        rectangleView.backgroundColor = .systemGray4
+        rectangleView.backgroundColor = .systemGray6
         
         titleTextField.placeholder = "제목"
         titleTextField.font = .systemFont(ofSize: 15)

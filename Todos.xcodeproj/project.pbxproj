@@ -45,6 +45,7 @@
 		D427468B2C3E7C3E0014FB1F /* ImageSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D427468A2C3E7C3E0014FB1F /* ImageSelectViewModel.swift */; };
 		D430D0F42C3F991900A5312A /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430D0F32C3F991900A5312A /* CalendarListViewController.swift */; };
 		D430D0FC2C40DCAB00A5312A /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430D0FB2C40DCAB00A5312A /* CalendarViewModel.swift */; };
+		D430D0FE2C414CE400A5312A /* ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430D0FD2C414CE400A5312A /* ItemViewModel.swift */; };
 		D48770FD2C3681A40053BAF0 /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48770FC2C3681A40053BAF0 /* TodoRepository.swift */; };
 		D48771002C3682D60053BAF0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48770FF2C3682D60053BAF0 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -100,6 +101,7 @@
 		D427468A2C3E7C3E0014FB1F /* ImageSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelectViewModel.swift; sourceTree = "<group>"; };
 		D430D0F32C3F991900A5312A /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
 		D430D0FB2C40DCAB00A5312A /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		D430D0FD2C414CE400A5312A /* ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModel.swift; sourceTree = "<group>"; };
 		D48770FC2C3681A40053BAF0 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		D48770FF2C3682D60053BAF0 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -194,6 +196,7 @@
 				D41AC49F2C341B66002A0D34 /* TitleMemoTableViewCell.swift */,
 				D41AC49B2C341AD5002A0D34 /* AddNewTableViewCell.swift */,
 				D427468A2C3E7C3E0014FB1F /* ImageSelectViewModel.swift */,
+				D430D0FD2C414CE400A5312A /* ItemViewModel.swift */,
 			);
 			path = Register;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				D41AC4A32C341F81002A0D34 /* UIImage+Ex.swift in Sources */,
 				D41AC4AD2C3580AC002A0D34 /* DueDateViewController.swift in Sources */,
 				D41AC4732C33DCFE002A0D34 /* HomeViewController.swift in Sources */,
+				D430D0FE2C414CE400A5312A /* ItemViewModel.swift in Sources */,
 				D41AC4AF2C3580F2002A0D34 /* TagViewController.swift in Sources */,
 				D427468B2C3E7C3E0014FB1F /* ImageSelectViewModel.swift in Sources */,
 				D41AC4912C3417B1002A0D34 /* ReminderListViewController.swift in Sources */,

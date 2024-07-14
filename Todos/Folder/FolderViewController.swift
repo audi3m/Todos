@@ -34,9 +34,11 @@ final class FolderViewController: BaseViewController {
     
     private func setNavBar() {
         navigationItem.title = folder?.name
+        navigationItem.largeTitleDisplayMode = .never
         
         let plus = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addNewTodo))
-        navigationItem.rightBarButtonItem = plus
+        let delete = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteFolder))
+        navigationItem.rightBarButtonItems = [plus, delete]
         
     }
     
@@ -52,6 +54,12 @@ final class FolderViewController: BaseViewController {
     
     override func setUI() {
         
+    }
+    
+    @objc private func deleteFolder() {
+        showAlertWithChoice(title: "폴더를 삭제하시겠습니까?", message: "폴더 안에 있는 아이템들도 모두 삭제됩니다.", ok: "삭제") {
+            
+        }
     }
     
     @objc private func addNewTodo() {

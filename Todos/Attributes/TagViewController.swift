@@ -19,8 +19,6 @@ final class TagViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "태그"
-        
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

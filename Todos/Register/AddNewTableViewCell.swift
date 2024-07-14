@@ -59,7 +59,7 @@ final class AddNewTableViewCell: BaseTableViewCell {
         contentView.backgroundColor = .clear
         
         rectangleView.layer.cornerRadius = 10
-        rectangleView.backgroundColor = .systemGray4
+        rectangleView.backgroundColor = .systemGray6
         
         attributeLabel.font = .systemFont(ofSize: 15)
         
@@ -72,7 +72,7 @@ final class AddNewTableViewCell: BaseTableViewCell {
         selectedImageView.isHidden = true
         
         arrowImageView.image = UIImage(systemName: "chevron.right")
-        arrowImageView.tintColor = .white
+        arrowImageView.tintColor = .label.withAlphaComponent(0.3)
     }
     
     func setAttributeValue(type: ValueType) {
