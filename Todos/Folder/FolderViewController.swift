@@ -71,7 +71,6 @@ final class FolderViewController: BaseViewController {
         present(nav, animated: true)
     }
     
-    
 }
 
 extension FolderViewController: UITableViewDelegate, UITableViewDataSource {
@@ -84,10 +83,6 @@ extension FolderViewController: UITableViewDelegate, UITableViewDataSource {
         let data = list[indexPath.row]
         cell.textLabel?.text = data.title
         
-        
-        
         return cell
     }
-    
-    
 }

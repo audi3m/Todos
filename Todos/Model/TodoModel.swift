@@ -23,6 +23,7 @@ final class TodoModel: Object {
     @Persisted var isDone = false
     @Persisted var tag: String?
     @Persisted var priority: Int = 0
+    
     @Persisted(originProperty: "toDoList") var folder: LinkingObjects<Folder>
     
     convenience init(title: String, memo: String, dueDate: Date?, tag: String?, priority: Int) {
@@ -42,4 +43,4 @@ final class TodoModel: Object {
         }
     }
     
-} 
+}

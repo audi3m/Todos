@@ -10,7 +10,6 @@ import SnapKit
 
 final class HomeViewController: BaseViewController {
     
-//    let searchController = UISearchController(searchResultsController: ReminderListViewController(type: .withQuery, query: "ㅎ"))
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
     
     let toDoRepository = TodoRepository()
@@ -25,7 +24,6 @@ final class HomeViewController: BaseViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.id)
-        
     }
     
     override func setHierarchy() {
@@ -36,7 +34,6 @@ final class HomeViewController: BaseViewController {
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        
     }
     
     override func setUI() {
@@ -57,7 +54,7 @@ final class HomeViewController: BaseViewController {
         toolbarItems = [
             UIBarButtonItem(customView: addNewToDoButton),
             UIBarButtonItem(systemItem: .flexibleSpace),
-            UIBarButtonItem(title: "목록 추가", style: .plain, target: self, action: #selector(addNewButtonClicked))
+            UIBarButtonItem(title: "목록 추가", style: .plain, target: self, action: #selector(addNewFolderClicked))
         ]
         
     }
@@ -84,11 +81,11 @@ final class HomeViewController: BaseViewController {
         var actions = [UIAction]()
         
         for folder in folders {
-            let action = UIAction(title: folder.name, image: nil, handler: { [weak self] _ in
+            let action = UIAction(title: folder.name, image: nil) { [weak self] _ in
                 let vc = FolderViewController()
                 vc.folder = folder
                 self?.navigationController?.pushViewController(vc, animated: true)
-            })
+            }
             actions.append(action)
         }
         
@@ -99,7 +96,6 @@ final class HomeViewController: BaseViewController {
         let vc = AddNewFolderViewController()
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
-//        nav.isModalInPresentation = true
         present(nav, animated: true)
     }
     
@@ -131,16 +127,6 @@ final class HomeViewController: BaseViewController {
     }
     
 }
-
-//extension HomeViewController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        guard let text = searchController.searchBar.text else { return }
-//        
-//    }
-//    
-//    
-//}
-
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

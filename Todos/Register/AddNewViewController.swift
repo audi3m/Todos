@@ -14,7 +14,17 @@ final class AddNewViewController: BaseViewController {
     let viewModel = ItemViewModel()
     var newOrOldItem: TodoModel?
     
-    private let tableView = UITableView()
+    lazy private var tableView: UITableView = {
+        let view = UITableView()
+        view.delegate = self
+        view.dataSource = self
+        view.register(TitleMemoTableViewCell.self, forCellReuseIdentifier: TitleMemoTableViewCell.id)
+        view.register(AddNewTableViewCell.self, forCellReuseIdentifier: AddNewTableViewCell.id)
+        view.separatorStyle = .none
+        view.backgroundColor = .systemBackground
+        view.keyboardDismissMode = .onDrag
+        return view
+    }()
     var newTodo = TodoModel()
     var sendAdded: ((Bool) -> Void)?
     var itemToEdit: TodoModel?
@@ -29,13 +39,15 @@ final class AddNewViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         setNavBar()
         setValuesForEditMode(item: itemToEdit)
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(TitleMemoTableViewCell.self, forCellReuseIdentifier: TitleMemoTableViewCell.id)
-        tableView.register(AddNewTableViewCell.self, forCellReuseIdentifier: AddNewTableViewCell.id)
+        view.addSubview(tableView)
+        
+        tableView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
         
         bindData()
     }
@@ -59,23 +71,6 @@ final class AddNewViewController: BaseViewController {
         navigationItem.rightBarButtonItem = add 
     }
     
-    override func setHierarchy() {
-        view.addSubview(tableView)
-    }
-    
-    override func setLayout() {
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-    }
-    
-    override func setUI() {
-        view.backgroundColor = .systemBackground
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = .systemBackground
-        tableView.keyboardDismissMode = .onDrag
-    }
-    
     @objc private func cancelButtonClicked() {
         sendAdded?(false)
         dismiss(animated: true)
@@ -85,13 +80,13 @@ final class AddNewViewController: BaseViewController {
         let titleCell = tableView.visibleCells.first as! TitleMemoTableViewCell
         let title = titleCell.titleTextField.text!
         let memo = titleCell.memoTextField.text!
-        guard title.isEmpty else {
+        guard !title.isEmpty else {
             showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
             return
         }
         
-//        viewModel.inputTitle.value = title
-//        viewModel.inputMemo.value = memo
+        viewModel.inputTitle.value = title
+        viewModel.inputMemo.value = memo
         
         newTodo.title = title
         newTodo.memo = memo
