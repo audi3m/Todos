@@ -12,8 +12,6 @@ final class HomeViewController: BaseViewController {
     
 //    let searchController = UISearchController(searchResultsController: ReminderListViewController(type: .withQuery, query: "ㅎ"))
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
-    private let addNewToDoButton = UIButton()
-    private let addNewFolderButton = UIButton()
     
     let toDoRepository = TodoRepository()
     let folderRepository = FolderRepository()
@@ -23,15 +21,15 @@ final class HomeViewController: BaseViewController {
         toDoRepository.printPath()
         
         setNavBar()
+        setToolbar()
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.id)
+        
     }
     
     override func setHierarchy() {
         view.addSubview(collectionView)
-        view.addSubview(addNewToDoButton)
-        view.addSubview(addNewFolderButton)
     }
     
     override func setLayout() {
@@ -39,35 +37,36 @@ final class HomeViewController: BaseViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        addNewToDoButton.snp.makeConstraints { make in
-            make.leading.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
-        }
-        
-        addNewFolderButton.snp.makeConstraints { make in
-            make.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
-        }
     }
     
     override func setUI() {
+        
+    }
+    
+    private func setToolbar() {
+        let addNewToDoButton = UIButton()
         addNewToDoButton.setTitle(" 새로운 할 일", for: .normal)
         addNewToDoButton.setTitleColor(.systemBlue, for: .normal)
         addNewToDoButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
         
-        let toDoButtonConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold)
+        let toDoButtonConfig = UIImage.SymbolConfiguration(pointSize: 23, weight: .bold)
         let image = UIImage(systemName: "plus.circle.fill", withConfiguration: toDoButtonConfig)
         addNewToDoButton.setImage(image, for: .normal)
         addNewToDoButton.addTarget(self, action: #selector(addNewButtonClicked), for: .touchUpInside)
         
-        addNewFolderButton.setTitle("목록 추가", for: .normal)
-        addNewFolderButton.setTitleColor(.systemBlue, for: .normal)
-        addNewFolderButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
-        addNewFolderButton.addTarget(self, action: #selector(addNewFolderClicked), for: .touchUpInside)
+        toolbarItems = [
+            UIBarButtonItem(customView: addNewToDoButton),
+            UIBarButtonItem(systemItem: .flexibleSpace),
+            UIBarButtonItem(title: "목록 추가", style: .plain, target: self, action: #selector(addNewButtonClicked))
+        ]
+        
     }
     
     private func setNavBar() {
         navigationItem.title = "할 일"
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.setToolbarHidden(false, animated: false)
         
         //        navigationItem.searchController = searchController
         //        searchController.searchResultsUpdater = self

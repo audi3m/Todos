@@ -19,9 +19,15 @@ final class ItemViewModel {
     var inputTag: Observable<String?> = Observable(nil)
     var inputPriority: Observable<Int> = Observable(0)
     
+    var inputFolder: Observable<Folder?> = Observable(nil)
+    
     var outputItem: Observable<TodoModel?> = Observable(nil)
     
     init() {
+        if let item = inputItem.value {
+            
+        }
+        
         update()
     }
     
@@ -53,6 +59,10 @@ final class ItemViewModel {
         inputPriority.bind { value in
             self.outputItem.value?.priority = value
         }
+        
+//        inputFolder.bind { value in
+//            self.outputItem.value?.folder = value
+//        }
     }
     
 }

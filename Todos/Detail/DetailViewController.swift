@@ -157,7 +157,8 @@ final class DetailViewController: BaseViewController {
     
     @objc private func editButtonClicked() {
         let vc = AddNewViewController()
-        vc.item = item
+//        vc.viewModel.inputItem.value = item
+        vc.itemToEdit = item
         vc.sendAdded = { added in
             if added {
                 self.isUpdated = true
