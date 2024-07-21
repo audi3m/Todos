@@ -10,30 +10,47 @@ import RealmSwift
 
 final class FolderViewController: BaseViewController {
     
-    var folder: Folder!
+    var folder: Folder
     var list: Results<TodoModel>!
     let todoRepository = TodoRepository()
+    let folderRepository = FolderRepository()
     
-    let tableView = UITableView()
+    lazy private var tableView: UITableView = {
+        let view = UITableView()
+        view.delegate = self
+        view.dataSource = self
+        return view
+    }()
+    
+    var isUpdated: ((Bool) -> Void)?
+    var updated = false
+    
+    init(folder: Folder) {
+        self.folder = folder
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavBar()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
         fetchData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        isUpdated?(updated)
     }
     
     func fetchData() {
         list = todoRepository.fetchByFolder(folder: folder)
-        
         tableView.reloadData()
     }
     
     private func setNavBar() {
-        navigationItem.title = folder?.name
+        navigationItem.title = folder.name
         navigationItem.largeTitleDisplayMode = .never
         
         let plus = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addNewTodo))
@@ -51,20 +68,25 @@ final class FolderViewController: BaseViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
-    
-    override func setUI() {
-        
-    }
-    
+     
     @objc private func deleteFolder() {
-        showAlertWithChoice(title: "폴더를 삭제하시겠습니까?", message: "폴더 안에 있는 아이템들도 모두 삭제됩니다.", ok: "삭제") {
-            
+        showAlertWithChoice(title: "폴더를 삭제하시겠습니까?", message: "폴더 안에 있는 아이템들도 모두 삭제됩니다.", ok: "삭제") { [weak self] in
+            guard let self else { return }
+            self.folderRepository.deleteFolder(self.folder)
+            updated = true
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
     @objc private func addNewTodo() {
         let vc = AddNewViewController()
         vc.folder = folder
+        vc.sendAdded = { added in
+            if added {
+                self.tableView.reloadData()
+                self.updated = true
+            }
+        }
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
         nav.isModalInPresentation = true

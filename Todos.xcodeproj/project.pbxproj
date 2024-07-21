@@ -206,7 +206,6 @@
 			children = (
 				D41AC4722C33DCFE002A0D34 /* HomeViewController.swift */,
 				D41AC4992C3418A7002A0D34 /* HomeCollectionViewCell.swift */,
-				D42746592C3C354D0014FB1F /* AddNewFolderViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -241,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				D427465C2C3C3BEC0014FB1F /* FolderViewController.swift */,
+				D42746592C3C354D0014FB1F /* AddNewFolderViewController.swift */,
 			);
 			path = Folder;
 			sourceTree = "<group>";

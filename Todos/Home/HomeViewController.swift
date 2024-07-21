@@ -17,7 +17,6 @@ final class HomeViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        toDoRepository.printPath()
         
         setNavBar()
         setToolbar()
@@ -34,10 +33,6 @@ final class HomeViewController: BaseViewController {
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
-    override func setUI() {
-        
     }
     
     private func setToolbar() {
@@ -65,35 +60,48 @@ final class HomeViewController: BaseViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setToolbarHidden(false, animated: false)
         
-        //        navigationItem.searchController = searchController
-        //        searchController.searchResultsUpdater = self
-        //        searchController.searchBar.placeholder = "검색"
-        let folderMenu = createFolderMenu()
-        
         let calendar = UIBarButtonItem(image: UIImage(systemName: "calendar"), style: .plain, target: self, action: #selector(calendarButtonClicked))
-        let folder = UIBarButtonItem(title: nil, image: UIImage(systemName: "folder"), primaryAction: nil, menu: folderMenu)
+        let folder = UIBarButtonItem(title: nil, image: UIImage(systemName: "folder"), primaryAction: nil, menu: folderMenu())
         navigationItem.leftBarButtonItem = calendar
         navigationItem.rightBarButtonItem = folder
     }
     
-    func createFolderMenu() -> UIMenu {
+    private func folderMenu() -> UIMenu {
         let folders = folderRepository.fetchFolders()
         var actions = [UIAction]()
         
-        for folder in folders {
-            let action = UIAction(title: folder.name, image: nil) { [weak self] _ in
-                let vc = FolderViewController()
-                vc.folder = folder
-                self?.navigationController?.pushViewController(vc, animated: true)
-            }
+        if folders.isEmpty {
+            let action = UIAction(title: "(비어있음)", attributes: .disabled) { _ in }
             actions.append(action)
+        } else {
+            for folder in folders {
+                let action = UIAction(title: folder.name, image: nil) { [weak self] _ in
+                    let vc = FolderViewController(folder: folder)
+                    vc.isUpdated = { updated in
+                        if updated {
+                            self?.collectionView.reloadData()
+                            self?.updateFolders()
+                        }
+                    }
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+                actions.append(action)
+            }
         }
         
         return UIMenu(title: "", options: .displayInline, children: actions)
     }
     
+    private func updateFolders() {
+        let folder = UIBarButtonItem(title: nil, image: UIImage(systemName: "folder"), primaryAction: nil, menu: folderMenu())
+        navigationItem.rightBarButtonItem = folder
+    }
+    
     @objc private func addNewFolderClicked() {
         let vc = AddNewFolderViewController()
+        vc.added = {
+            self.updateFolders()
+        }
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .formSheet
         present(nav, animated: true)

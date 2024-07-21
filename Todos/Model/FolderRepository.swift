@@ -10,7 +10,7 @@ import RealmSwift
 
 final class FolderRepository {
     
-    private let realm = try! Realm()
+    private let realm = try! Realm() 
     
     func createItem(_ data: Folder) {
         do {

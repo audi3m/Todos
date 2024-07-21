@@ -15,6 +15,8 @@ final class AddNewFolderViewController: BaseViewController {
     private let rectangleView = UIView()
     private let nameTextField = UITextField()
     
+    var added: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavBar()
@@ -67,6 +69,7 @@ final class AddNewFolderViewController: BaseViewController {
         let newFolder = Folder()
         newFolder.name = name
         repository.createItem(newFolder)
+        added?()
         dismiss(animated: true)
     }
 }
