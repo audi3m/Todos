@@ -11,6 +11,9 @@ import RealmSwift
 
 final class ReminderListViewController: BaseViewController {
     
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout())
+    var dataSource: UICollectionViewDiffableDataSource<ListSections, TodoModel>!
+    
     private lazy var tableView = {
         let view = UITableView()
         view.delegate = self
@@ -41,6 +44,9 @@ final class ReminderListViewController: BaseViewController {
         super.viewDidLoad()
         setNavBar()
         list = repository.filteredList(filter: type, query: query)
+        
+        configDataSource()
+        updateSnapshot()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -82,12 +88,54 @@ final class ReminderListViewController: BaseViewController {
     
     override func setHierarchy() {
         view.addSubview(tableView)
+//        view.addSubview(collectionView)
     }
     
     override func setLayout() {
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        
+//        collectionView.snp.makeConstraints { make in
+//            make.edges.equalTo(view.safeAreaLayoutGuide)
+//        }
+        
+    }
+    
+}
+
+// collectionView
+extension ReminderListViewController {
+    
+    private func configDataSource() {
+        var registration: UICollectionView.CellRegistration<ReminderCollectionViewCell, TodoModel>!
+        registration = UICollectionView.CellRegistration { cell, indexPath, item in
+            cell.data = item
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
+            let cell = collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
+            return cell
+        })
+    }
+    
+    // ---------------------------------------------------------------------------------------------------
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<ListSections, TodoModel>()
+        snapshot.appendSections(ListSections.allCases)
+//        snapshot.appendItems(list, toSection: .all)
+        dataSource.apply(snapshot) // reload
+    }
+    // ---------------------------------------------------------------------------------------------------
+    
+    private func layout() -> UICollectionViewCompositionalLayout {
+        var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        return layout
+    }
+    
+    enum ListSections: CaseIterable {
+        case all
     }
     
 }

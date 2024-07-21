@@ -46,6 +46,7 @@
 		D430D0F42C3F991900A5312A /* CalendarListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430D0F32C3F991900A5312A /* CalendarListViewController.swift */; };
 		D430D0FC2C40DCAB00A5312A /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430D0FB2C40DCAB00A5312A /* CalendarViewModel.swift */; };
 		D430D0FE2C414CE400A5312A /* ItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430D0FD2C414CE400A5312A /* ItemViewModel.swift */; };
+		D48050AA2C4DD36700FD5FFC /* ReminderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48050A92C4DD36700FD5FFC /* ReminderCollectionViewCell.swift */; };
 		D48770FD2C3681A40053BAF0 /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48770FC2C3681A40053BAF0 /* TodoRepository.swift */; };
 		D48771002C3682D60053BAF0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48770FF2C3682D60053BAF0 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -102,6 +103,7 @@
 		D430D0F32C3F991900A5312A /* CalendarListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListViewController.swift; sourceTree = "<group>"; };
 		D430D0FB2C40DCAB00A5312A /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		D430D0FD2C414CE400A5312A /* ItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewModel.swift; sourceTree = "<group>"; };
+		D48050A92C4DD36700FD5FFC /* ReminderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCollectionViewCell.swift; sourceTree = "<group>"; };
 		D48770FC2C3681A40053BAF0 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		D48770FF2C3682D60053BAF0 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -183,6 +185,7 @@
 			children = (
 				D41AC4902C3417B1002A0D34 /* ReminderListViewController.swift */,
 				D41AC4972C341872002A0D34 /* ReminderTableViewCell.swift */,
+				D48050A92C4DD36700FD5FFC /* ReminderCollectionViewCell.swift */,
 				D430D0F32C3F991900A5312A /* CalendarListViewController.swift */,
 				D430D0FB2C40DCAB00A5312A /* CalendarViewModel.swift */,
 			);
@@ -358,6 +361,7 @@
 				D427463C2C3990160014FB1F /* UILabel+Ex.swift in Sources */,
 				D41AC49A2C3418A7002A0D34 /* HomeCollectionViewCell.swift in Sources */,
 				D41AC48F2C33DE48002A0D34 /* TodoModel.swift in Sources */,
+				D48050AA2C4DD36700FD5FFC /* ReminderCollectionViewCell.swift in Sources */,
 				D42746582C3C2F5B0014FB1F /* FolderRepository.swift in Sources */,
 				D41AC4B52C35A435002A0D34 /* Date+Ex.swift in Sources */,
 				D41AC49C2C341AD5002A0D34 /* AddNewTableViewCell.swift in Sources */,
