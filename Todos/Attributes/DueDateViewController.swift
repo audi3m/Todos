@@ -72,7 +72,6 @@ final class DueDateViewController: BaseViewController {
         noDueDateButton.addTarget(self, action: #selector(deleteDueDate), for: .touchUpInside)
     }
     
-    
     @objc private func onDateValueChanged(_ datePicker: UIDatePicker) {
         print(#function)
         selectedDate = datePicker.date

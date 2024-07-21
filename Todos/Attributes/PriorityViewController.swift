@@ -54,7 +54,7 @@ final class PriorityViewController: BaseViewController {
         }
     }
     
-    override func setUI() { 
+    override func setUI() {
         segmentPicker.insertSegment(withTitle: "없음", at: 0, animated: false)
         segmentPicker.insertSegment(withTitle: "낮음", at: 1, animated: false)
         segmentPicker.insertSegment(withTitle: "보통", at: 2, animated: false)

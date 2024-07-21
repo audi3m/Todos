@@ -11,23 +11,14 @@ import SnapKit
 
 final class AddNewViewController: BaseViewController {
     
-    let viewModel = ItemViewModel()
-    var newOrOldItem: TodoModel?
+    let imageViewModel = ImageSelectViewModel()
     
-    lazy private var tableView: UITableView = {
-        let view = UITableView()
-        view.delegate = self
-        view.dataSource = self
-        view.register(TitleMemoTableViewCell.self, forCellReuseIdentifier: TitleMemoTableViewCell.id)
-        view.register(AddNewTableViewCell.self, forCellReuseIdentifier: AddNewTableViewCell.id)
-        view.separatorStyle = .none
-        view.backgroundColor = .systemBackground
-        view.keyboardDismissMode = .onDrag
-        return view
-    }()
+    let viewModel = ItemViewModel()
+    
+    private let tableView = UITableView()
     var newTodo = TodoModel()
     var sendAdded: ((Bool) -> Void)?
-    var itemToEdit: TodoModel?
+    var item: TodoModel?
     var folder: Folder?
      
     var selectedImage: UIImage?
@@ -39,36 +30,56 @@ final class AddNewViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
         setNavBar()
-        setValuesForEditMode(item: itemToEdit)
+        setValuesForEditMode(item: item)
         
-        view.addSubview(tableView)
-        
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(TitleMemoTableViewCell.self, forCellReuseIdentifier: TitleMemoTableViewCell.id)
+        tableView.register(AddNewTableViewCell.self, forCellReuseIdentifier: AddNewTableViewCell.id)
         
         bindData()
+        
     }
     
     private func bindData() {
+        viewModel.outputItem.bind { item in
+            
+        }
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        print(#function)
         if notAppeared {
-            setValuesForEditMode(item: itemToEdit)
+            setValuesForEditMode(item: item)
             notAppeared = false
         }
     }
     
     private func setNavBar() {
-        navigationItem.title = itemToEdit == nil ? "새로운 할 일" : "편집"
+        navigationItem.title = item == nil ? "새로운 할 일" : "편집"
         let cancel = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelButtonClicked))
-        let add = UIBarButtonItem(title: itemToEdit == nil ? "추가" : "완료", style: .plain, target: self, action: #selector(addButtonClicked))
+        let add = UIBarButtonItem(title: item == nil ? "추가" : "완료", style: .plain, target: self, action: #selector(addButtonClicked))
         navigationItem.leftBarButtonItem = cancel
-        navigationItem.rightBarButtonItem = add 
+        navigationItem.rightBarButtonItem = add
+    }
+    
+    override func setHierarchy() {
+        view.addSubview(tableView)
+    }
+    
+    override func setLayout() {
+        tableView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    override func setUI() {
+        view.backgroundColor = .systemBackground
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .systemBackground
+        tableView.keyboardDismissMode = .onDrag
     }
     
     @objc private func cancelButtonClicked() {
@@ -80,37 +91,32 @@ final class AddNewViewController: BaseViewController {
         let titleCell = tableView.visibleCells.first as! TitleMemoTableViewCell
         let title = titleCell.titleTextField.text!
         let memo = titleCell.memoTextField.text!
-        guard !title.isEmpty else {
-            showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
-            return
-        }
-        
-        viewModel.inputTitle.value = title
-        viewModel.inputMemo.value = memo
-        
         newTodo.title = title
         newTodo.memo = memo
         
-        // 편집
-        if let item = self.itemToEdit {
-            todoRepository.updateItem(item, with: newTodo)
-            if let toDoImage = self.selectedImage {
-                saveImageToDocument(image: toDoImage, filename: "\(item.id)")
-            }
+        if title.isEmpty {
+            showAlert(title: "제목을 입력해주세요", message: "제목은 필수입니다.", ok: "확인") { }
         } else {
-            // 새로운 할 일
-            if let folder {
-                folderRepository.addItem(folder, newTodo: newTodo)
+            // 편집
+            if let item = self.item {
+                todoRepository.updateItem(item, with: newTodo)
+                if let toDoImage = self.selectedImage {
+                    saveImageToDocument(image: toDoImage, filename: "\(item.id)")
+                }
+            } else {
+                // 새로운 할 일
+                if let folder {
+                    folderRepository.addItem(folder, newTodo: newTodo)
+                }
+                todoRepository.createItem(newTodo)
+                if let toDoImage = self.selectedImage {
+                    saveImageToDocument(image: toDoImage, filename: "\(newTodo.id)")
+                }
             }
-            todoRepository.createItem(newTodo)
-            if let toDoImage = self.selectedImage {
-                saveImageToDocument(image: toDoImage, filename: "\(newTodo.id)")
-            }
+            
+            sendAdded?(true)
+            dismiss(animated: true)
         }
-        
-        sendAdded?(true)
-        dismiss(animated: true)
-        
     }
 }
 
@@ -122,14 +128,14 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: TitleMemoTableViewCell.id, for: indexPath) as! TitleMemoTableViewCell
-            if let itemToEdit {
-                cell.titleTextField.text = itemToEdit.title
-                cell.memoTextField.text = itemToEdit.memo
+            if let item {
+                cell.titleTextField.text = item.title
+                cell.memoTextField.text = item.memo
             }
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: AddNewTableViewCell.id, for: indexPath) as! AddNewTableViewCell
-            let text = Attributes.allCases[indexPath.row].rawValue 
+            let text = Attributes.allCases[indexPath.row].rawValue
             cell.attributeLabel.text = text
             return cell
         }
@@ -140,7 +146,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
         switch attribute {
         case .dueDate:
             let vc = DueDateViewController()
-            var currentDate = itemToEdit?.dueDate
+            var currentDate = item?.dueDate
             vc.datePicker.date = currentDate ?? .now
             vc.sendDate = { date in
                 currentDate = date
@@ -150,8 +156,8 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             navigationController?.pushViewController(vc, animated: true)
         case .tag:
             let vc = TagViewController()
-            if let itemToEdit {
-                vc.tagTextField.text = itemToEdit.tag
+            if let item {
+                vc.tagTextField.text = item.tag
             }
             vc.sendTag = { tag in
                 self.newTodo.tag = tag
@@ -160,8 +166,8 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             navigationController?.pushViewController(vc, animated: true)
         case .priority:
             let vc = PriorityViewController()
-            if let itemToEdit {
-                vc.selectedPriority = Priority(rawValue: itemToEdit.priority) ?? .none
+            if let item {
+                vc.selectedPriority = Priority(rawValue: item.priority) ?? .none
             }
             vc.sendPriority = { priority in
                 self.newTodo.priority = priority.rawValue
@@ -173,7 +179,7 @@ extension AddNewViewController: UITableViewDelegate, UITableViewDataSource {
             }
             navigationController?.pushViewController(vc, animated: true)
         case .addImage:
-            if itemToEdit != nil { }
+            if item != nil { }
             addImageCellClicked()
         default: break
         }
